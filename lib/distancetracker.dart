@@ -1,4 +1,29 @@
+import 'dart:async';
+
 import 'package:geolocator/geolocator.dart';
+import 'package:geolocator_android/geolocator_android.dart';
+
+class DistanceTracker {
+
+  late double m_myDistanceInMeters;
+
+  final LocationSettings locationSettings = LocationSettings(
+    accuracy: LocationAccuracy.high,
+    distanceFilter: 10,
+  );
+
+  StreamSubscription<Position> positionStream = Geolocator.getPositionStream(locationSettings: locationSettings).listen(
+          (Position? position) {
+        print(position == null ? 'Unknown' : '${position.latitude.toString()}, ${position.longitude.toString()}');
+      }
+  );
+  //m_myDistance = Geolocator.distanceBetween()
+}
+
+final LocationSettings locationSettings = LocationSettings(
+  accuracy: LocationAccuracy.high,
+  distanceFilter: 10,
+);
 
 /// Determine the current position of the device.
 ///
