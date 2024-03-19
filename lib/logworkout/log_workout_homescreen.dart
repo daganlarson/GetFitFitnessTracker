@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
+//all this stuff for the view YKWIM:
 class LogWorkoutHomeScreen extends StatelessWidget {
   const LogWorkoutHomeScreen({super.key});
 
   @override
-  Wideget build(BuildContext context) {
+  Widget build(BuildContext context) {
 
   }
 }
