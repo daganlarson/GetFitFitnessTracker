@@ -2,15 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:binarybrigade/workout.dart';
 
 
-class LogWorkout {
+class LogWorkout extends StatelessWidget {
+  const LogWorkout(
+      super.key, required this.workout, required this.constraints});
+  final Workout workout;
 
   //logs the workout
-  void logWorkout(BuildContext context){
+  @override
+  Widget build(BuildContext context){
   //logging workout UI
     //why is dart so weird
     showDialog(context: context, builder: (BuildContext context) {
       return AlertDialog(
-        title: Text('Log Workout'),
+        title: const Text('Log Workout'),
         content: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -19,6 +23,10 @@ class LogWorkout {
               TextFormField(
                 decoration: InputDecoration(labelText: 'Date'),
                 keyboardType: TextInputType.datetime, //i think?
+              ),
+              TextFormField(
+                decoration: InputDecoration(labelText: 'Exercise Description'),
+                keyboardType: TextInputType.text,
               ),
               TextFormField(
                 decoration: InputDecoration(labelText: 'Exercise Type'),
@@ -35,6 +43,7 @@ class LogWorkout {
             ],
           ),
         ),
+
         actions: <Widget>[
           //erm(
             onPressed: () {
@@ -42,7 +51,7 @@ class LogWorkout {
               Workout workout = Workout(
                 //data
               );
-              // Save the workout or perform any other actions
+              // save workout
               saveWorkout(workout);
               Navigator.of(context).pop();
             },
