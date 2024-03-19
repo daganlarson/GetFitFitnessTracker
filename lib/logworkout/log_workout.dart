@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:binarybrigade/workout.dart';
+import 'package:flutter/services.dart';
 
 
 class LogWorkout extends StatelessWidget {
-  const LogWorkout(
-      super.key, required this.workout, required this.constraints});
-  final Workout workout;
 
   //logs the workout
   @override
-  Widget build(BuildContext context){
-  //logging workout UI
+  Widget build(BuildContext context) {
+    //logging workout UI
     //why is dart so weird
     showDialog(context: context, builder: (BuildContext context) {
       return AlertDialog(
@@ -43,24 +41,10 @@ class LogWorkout extends StatelessWidget {
             ],
           ),
         ),
-
-        actions: <Widget>[
-          //erm(
-            onPressed: () {
-              // create a workout object with data
-              Workout workout = Workout(
-                //data
-              );
-              // save workout
-              saveWorkout(workout);
-              Navigator.of(context).pop();
-            },
-            child: Text('Log'),
-          ),
-        ],
       );
     },
     );
+    throw UnimplementedError();
   }
 
   void saveWorkout(Workout workout) {
@@ -68,9 +52,6 @@ class LogWorkout extends StatelessWidget {
 
     print('Workout logged: $workout');
   }
-
-
-  //
-
 }
+
 
