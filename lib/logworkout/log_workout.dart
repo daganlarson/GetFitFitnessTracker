@@ -1,9 +1,16 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:binarybrigade/workout.dart';
 import 'package:flutter/services.dart';
 
 
 class LogWorkout extends StatelessWidget {
+  const LogWorkout(
+  {super.key, required this.workout, required this.exercise});
+
+  final Workout workout;
+  final Exercise exercise;
 
   //logs the workout
   @override
@@ -20,27 +27,68 @@ class LogWorkout extends StatelessWidget {
               //input fields!
               TextFormField(
                 decoration: InputDecoration(labelText: 'Date'),
-                keyboardType: TextInputType.datetime, //i think?
+                initialValue: workout.m_date,
+                keyboardType: TextInputType.datetime,
+                onChanged: (value) {
+                  workout.m_date = value;
+                }
+              ),
+              TextFormField(
+                decoration: InputDecoration(labelText: 'Exercise Type'),
+                initialValue: exercise.m_exerciseType,
+                keyboardType: TextInputType.text,
+                onChanged: (value) {
+                  workout.m_listOfExercises.forEach((exercise) {
+                    exercise.m_exerciseType = value;
+                  });
+                },
               ),
               TextFormField(
                 decoration: InputDecoration(labelText: 'Exercise Description'),
                 keyboardType: TextInputType.text,
-              ),
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Exercise Type'),
-                keyboardType: TextInputType.text,
+                onChanged: (value) {
+                  workout.m_listOfExercises.forEach((exercise) {
+                    exercise.m_exerciseDescription = value;
+                  });
+                },
               ),
               TextFormField(
                 decoration: InputDecoration(labelText: 'Reps'),
                 keyboardType: TextInputType.number,
+                onChanged: (value) {
+                  workout.m_listOfExercises.forEach((exercise) {
+                    exercise.m_numberOfReps = int.parse(value);
+                  });
+                },
               ),
               TextFormField(
                 decoration: InputDecoration(labelText: 'Weight'),
                 keyboardType: TextInputType.number,
+                onChanged: (value) {
+                  workout.m_listOfExercises.forEach((exercise) {
+                    exercise.m_weightUsed = int.parse(value);
+                  });
+                },
               ),
             ],
           ),
         ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              //Save workout
+              saveWorkout(workout);
+              Navigator.of(context).pop();
+            },
+            child: const Text('Save'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('Cancel'),
+          )
+          ]
       );
     },
     );
