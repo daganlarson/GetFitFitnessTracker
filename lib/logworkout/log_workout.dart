@@ -1,4 +1,3 @@
-import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:binarybrigade/workout.dart';
@@ -26,7 +25,7 @@ class LogWorkout extends StatelessWidget {
             children: <Widget>[
               //input fields!
               TextFormField(
-                decoration: InputDecoration(labelText: 'Date'),
+                decoration: const InputDecoration(labelText: 'Date'),
                 initialValue: workout.m_date,
                 keyboardType: TextInputType.datetime,
                 onChanged: (value) {
@@ -34,7 +33,7 @@ class LogWorkout extends StatelessWidget {
                 }
               ),
               TextFormField(
-                decoration: InputDecoration(labelText: 'Exercise Type'),
+                decoration: const InputDecoration(labelText: 'Exercise Type'),
                 initialValue: exercise.m_exerciseType,
                 keyboardType: TextInputType.text,
                 onChanged: (value) {
@@ -43,17 +42,17 @@ class LogWorkout extends StatelessWidget {
                   });
                 },
               ),
+              // TextFormField(
+              //   decoration: InputDecoration(labelText: 'Exercise Description'),
+              //   keyboardType: TextInputType.text,
+              //   onChanged: (value) {
+              //     workout.m_listOfExercises.forEach((exercise) {
+              //       exercise.m_exerciseDescription = value;
+              //     });
+              //   },
+              // ),
               TextFormField(
-                decoration: InputDecoration(labelText: 'Exercise Description'),
-                keyboardType: TextInputType.text,
-                onChanged: (value) {
-                  workout.m_listOfExercises.forEach((exercise) {
-                    exercise.m_exerciseDescription = value;
-                  });
-                },
-              ),
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Reps'),
+                decoration: const InputDecoration(labelText: 'Reps'),
                 keyboardType: TextInputType.number,
                 onChanged: (value) {
                   workout.m_listOfExercises.forEach((exercise) {
@@ -62,7 +61,7 @@ class LogWorkout extends StatelessWidget {
                 },
               ),
               TextFormField(
-                decoration: InputDecoration(labelText: 'Weight'),
+                decoration: const InputDecoration(labelText: 'Weight'),
                 keyboardType: TextInputType.number,
                 onChanged: (value) {
                   workout.m_listOfExercises.forEach((exercise) {
