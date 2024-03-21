@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:binarybrigade/workout.dart';
 import 'package:flutter/services.dart';
 
-
 class LogWorkout extends StatelessWidget {
   const LogWorkout(
   {super.key, required this.workout, required this.exercise});
@@ -31,6 +30,24 @@ class LogWorkout extends StatelessWidget {
                 onChanged: (value) {
                   workout.m_date = value;
                 }
+              ),
+              TextFormField(
+                decoration: const InputDecoration(labelText: 'Time Started'),
+                keyboardType: TextInputType.datetime,
+                onChanged: (value) {
+                  workout.m_listOfExercises.forEach((exercise) {
+                    workout.m_timeStart = value as DateTime;
+                  });
+                },
+              ),
+              TextFormField(
+                decoration: const InputDecoration(labelText: 'Time Ended'),
+                keyboardType: TextInputType.datetime,
+                onChanged: (value) {
+                  workout.m_listOfExercises.forEach((exercise) {
+                    workout.m_timeEnd = value as DateTime;
+                  });
+                },
               ),
               TextFormField(
                 decoration: const InputDecoration(labelText: 'Exercise Type'),
