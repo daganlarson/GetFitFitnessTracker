@@ -6,6 +6,8 @@ import 'package:binarybrigade/pages/person_page.dart';
 import 'package:binarybrigade/pages/settings_page.dart';
 import 'package:flutter/material.dart';
 
+import 'distancetracker.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -44,19 +46,38 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
+  DistanceTracker myTracker = DistanceTracker();
+  bool distanceTrackerToggle = false;
   int pageIndex = 0;
   //these screens are the different pages that will be connected to the tabs
-  final screens = [
+  /*final screens = [
     MyHomePage(),
     SettingsPage(),
     PersonPage(),
     CalendarPage(),
     DistancePage(),
-  ];
+  ]; */
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        body: screens[pageIndex],
+  Widget build(BuildContext context) {
+    return Scaffold(
+      //=> Scaffold(
+      //body: screens[pageIndex],
+        body: Center(
+          child: ElevatedButton(
+            child: const Text('Track Distance'),
+            onPressed: () {
+              distanceTrackerToggle = !distanceTrackerToggle;
+              if (distanceTrackerToggle) {
+                myTracker.trackDistanceTraveled();
+              }
+            },
+          ),
+        )
+    );
+  }
+ /*
+
         bottomNavigationBar: NavigationBar(
           onDestinationSelected: (pageIndex) =>
               setState(() => this.pageIndex = pageIndex),
@@ -83,6 +104,6 @@ class _MyHomePageState extends State<MyHomePage> {
             )
           ],
         ),
-  );
+  ); */
   
 }

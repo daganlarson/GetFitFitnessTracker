@@ -1,4 +1,6 @@
 
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -8,7 +10,7 @@ Future<bool> determinePermissions() async {
 
   serviceEnabled = await Geolocator.isLocationServiceEnabled();
   if (!serviceEnabled) {
-    print('Location services are disabled.');
+    log('Location services are disabled.');
     return false;
   }
 
@@ -21,14 +23,14 @@ Future<bool> determinePermissions() async {
       // Android's shouldShowRequestPermissionRationale
       // returned true. According to Android guidelines
       // your App should show an explanatory UI now.
-      print('Location permissions are denied.');
+      log('Location permissions are denied.');
       return false;
     }
   }
 
   if (permission == LocationPermission.deniedForever) {
     // Permissions are denied forever, handle appropriately.
-    print(
+    log(
         'Location permissions are permanently denied, we cannot request permissions.');
     return false;
   }
@@ -54,7 +56,7 @@ class DistanceTracker {
 
     while (await m_permissionsEnabled != true) {
 
-      print('Permissions do not allow location tracking');
+      log('Permissions do not allow location tracking');
       m_permissionsEnabled = determinePermissions();
     }
     m_lastPosition = m_currentPosition;
@@ -64,11 +66,11 @@ class DistanceTracker {
     while (m_trackLocation) {
 
       m_distanceTraveled += Geolocator.distanceBetween(m_lastPosition.latitude.toDouble(), m_lastPosition.longitude.toDouble(), m_currentPosition.latitude.toDouble(), m_currentPosition.longitude.toDouble());
-      print('Current distance traveled: $m_distanceTraveled');
+      log('Current distance traveled: $m_distanceTraveled');
     }
     m_endTime = DateTime.now();
     m_difference = m_endTime.difference(m_startTime);
-    print('The duration of your workout was: $m_difference');
+    log('The duration of your workout was: $m_difference');
 
   }
   void changeTrackLocation() {

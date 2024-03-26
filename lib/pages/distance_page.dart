@@ -17,6 +17,7 @@ class DistancePage extends StatefulWidget {
       ),
       body:
         ElevatedButton(
+
           child: const Text('Track Distance'),
           onPressed: () {
             distanceTrackerToggle = !distanceTrackerToggle;
@@ -26,10 +27,9 @@ class DistancePage extends StatefulWidget {
           },
         ),
       bottomSheet:
-        Text('The distance of your workout was: ${myTracker.getDistance()}. The time it took to complete your workout was: ${myTracker.m_difference.toString()}' ),
+        Text('The distance of your workout was: ${myTracker.getDistance()}. The time it took to complete your workout was: ${myTracker.m_difference}' ),
 
     );
-
   }
   
   @override
