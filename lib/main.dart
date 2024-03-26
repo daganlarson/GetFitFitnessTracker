@@ -58,12 +58,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return const DefaultTabController(length: 4, child: Scaffold(
+    return const DefaultTabController(length: 5, child: Scaffold(
       bottomNavigationBar: TabBar( tabs: [
           Tab(icon: Icon(Icons.home),),
           Tab(icon: Icon(Icons.settings),),
           Tab(icon: Icon(Icons.person),),
           Tab(icon: Icon(Icons.calendar_month),),
+          Tab(icon: Icon(Icons.explore),),
         ],
       ),
       body: TabBarView( children: [
@@ -71,6 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
         Icon(Icons.settings),
         Icon(Icons.person),
         Icon(Icons.calendar_month),
+        Icon(Icons.explore),
       ]
     )
     ));
