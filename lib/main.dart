@@ -47,9 +47,8 @@ class _MyHomePageState extends State<MyHomePage> {
   ];
   @override
   Widget build(BuildContext context) => Scaffold(
-        body: screens[pageIndex],
+        body: screens2[pageIndex],
         bottomNavigationBar: NavigationBar(
-
           onDestinationSelected: (pageIndex) =>
               setState(() => this.pageIndex = pageIndex),
           destinations: const [

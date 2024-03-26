@@ -43,6 +43,9 @@ class DistanceTracker {
   bool m_trackLocation = false;
   late Position m_currentPosition;
   late Position m_lastPosition;
+  late DateTime m_startTime;
+  late DateTime m_endTime;
+  late final m_difference;
 
   Future<void> trackDistanceTraveled() async{
 
@@ -55,12 +58,16 @@ class DistanceTracker {
     }
     m_lastPosition = m_currentPosition;
     m_currentPosition = await Geolocator.getCurrentPosition();
+    m_startTime = DateTime.now();
 
     while (m_trackLocation) {
 
       m_distanceTraveled += Geolocator.distanceBetween(m_lastPosition.latitude.toDouble(), m_lastPosition.longitude.toDouble(), m_currentPosition.latitude.toDouble(), m_currentPosition.longitude.toDouble());
       print('Current distance traveled: $m_distanceTraveled');
     }
+    m_endTime = DateTime.now();
+    m_difference = m_endTime.difference(m_startTime);
+    print('The duration of your workout was: $m_difference');
 
   }
 
