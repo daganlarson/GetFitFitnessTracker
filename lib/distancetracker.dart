@@ -36,7 +36,7 @@ Future<bool> determinePermissions() async {
   return true;
 }
 
-class DistanceTrackerWidget extends StatefulWidget {
+class DistanceTracker {
 
   double m_distanceTraveled = 0;
   Future<bool> m_permissionsEnabled = determinePermissions();
@@ -64,6 +64,9 @@ class DistanceTrackerWidget extends StatefulWidget {
 
   }
 
+}
+
+class DistanceTrackerWidget extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -71,4 +74,3 @@ class DistanceTrackerWidget extends StatefulWidget {
   }
 
 }
-
