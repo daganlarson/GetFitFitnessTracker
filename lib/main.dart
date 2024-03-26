@@ -36,7 +36,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int pageIndex = 0;
   //these screens are the different pages that will be connected to the tabs
   final screens = [
-    const DistancePage(),
+    DistancePage(),
     const MyHomePage(),
   ];
   //these are testing screens to make sure the changing of tabs works
