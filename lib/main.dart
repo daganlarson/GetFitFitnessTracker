@@ -2,9 +2,66 @@
 
 import 'package:binarybrigade/pages/distance_page.dart';
 import 'package:flutter/material.dart';
+import 'package:binarybrigade/event.dart';
+import 'package:binarybrigade/eventwidget.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:permission_handler/permission_handler.dart';
 
-void main() {
+
+var results;
+String curCity ="";
+String curState="";
+List<Event> eventList = <Event>[];
+
+
+void main() async{
+  checkLocation();
+
+  results = await searchEvents();
+  results is List;
+  for(int x=0; x<results.length; x++){
+    Event tempEvent= Event(results[x]);
+    eventList.add(tempEvent);
+  }
   runApp(const MyApp());
+}
+
+void checkLocation() async{
+  WidgetsFlutterBinding.ensureInitialized();
+
+  var status = await Permission.locationWhenInUse.status;
+  if(status.isDenied || status.isRestricted){
+    Permission.locationWhenInUse.request();
+  }
+
+  var position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best).timeout(Duration(seconds: 5));
+  try {
+    List<Placemark> placemarks = await placemarkFromCoordinates(
+      position.latitude,
+      position.longitude,
+    );
+    curCity = placemarks[0].locality.toString();
+    curState= placemarks[0].administrativeArea.toString();
+  }catch(err){}
+}
+
+Future<List> searchEvents() async{
+  var query = "Exercise Events near $curCity, $curState";
+  var url = Uri.parse('https://serpapi.com/search?q=$query&google_domain=google.com&api_key=671b87e3fd80af91edf54cad1a630ad8d80d593b1afe754a507a44650e91e1bf');
+  // Your query
+  var response = await http.get(url);
+  var theResults = jsonDecode(response.body);
+  return theResults["events_results"];
+}
+
+void setEvents(List<dynamic> events) async{
+  for(int x=0; x<events.length; x++){
+    Event tempEvent= Event(results[x]);
+    eventList.add(tempEvent);
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -41,7 +98,17 @@ class _MyHomePageState extends State<MyHomePage> {
   ];
   //these are testing screens to make sure the changing of tabs works
   final screens2 = [
-    const Center(child: Text('home')),
+    Center(child:
+    Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        EventWidget(eventList[2]),
+        SizedBox(height:15),
+        EventWidget(eventList[1]),
+        SizedBox(height:15),
+        EventWidget(eventList[0]),
+      ],
+    )),
     const Center(child: Text('settings')),
     const Center(child: Text('person')),
     const Center(child: Text('calendar')),
