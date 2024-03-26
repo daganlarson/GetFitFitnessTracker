@@ -8,8 +8,8 @@ class DistancePage extends StatefulWidget {
     return Scaffold(
       appBar: AppBar(),
     );
-  }
 
+  }
   
   @override
   State<StatefulWidget> createState() {
