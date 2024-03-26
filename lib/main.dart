@@ -34,10 +34,12 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
 
   int pageIndex = 0;
+  //these screens are the different pages that will be connected to the tabs
   final screens = [
     const DistancePage(),
     const MyHomePage(),
   ];
+  //these are testing screens to make sure the changing of tabs works
   final screens2 = [
     const Center(child: Text('home')),
     const Center(child: Text('settings')),
@@ -45,6 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
     const Center(child: Text('calendar')),
     const Center(child: Text('explore')),
   ];
+
   @override
   Widget build(BuildContext context) => Scaffold(
         body: screens2[pageIndex],
@@ -75,31 +78,5 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
   );
-
-    /*return const DefaultTabController(length: 5, child: Scaffold(
-      bottomNavigationBar: TabBar( tabs: [
-          Tab(
-            icon: Icon(Icons.home),),
-          Tab(
-            icon: Icon(Icons.settings),),
-          Tab(
-            icon: Icon(Icons.person),),
-          Tab(
-            icon: Icon(Icons.calendar_month),),
-          Tab(
-            icon: Icon(Icons.explore),
-            text: 'Track'),
-        ],
-      ),
-      body: TabBarView( children: [
-        Icon(Icons.home),
-        Icon(Icons.settings),
-        Icon(Icons.person),
-        Icon(Icons.calendar_month),
-        Icon(Icons.explore),
-      ]
-    )
-    )); */
-
-
+  
 }
