@@ -1,3 +1,6 @@
+//import 'dart:html';
+
+import 'package:binarybrigade/pages/distance_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -13,42 +16,16 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
+  const MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -56,23 +33,50 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
+  int pageIndex = 0;
+  //these screens are the different pages that will be connected to the tabs
+  final screens = [
+    const DistancePage(),
+    const MyHomePage(),
+  ];
+  //these are testing screens to make sure the changing of tabs works
+  final screens2 = [
+    const Center(child: Text('home')),
+    const Center(child: Text('settings')),
+    const Center(child: Text('person')),
+    const Center(child: Text('calendar')),
+    const Center(child: Text('explore')),
+  ];
+
   @override
-  Widget build(BuildContext context) {
-    return const DefaultTabController(length: 4, child: Scaffold(
-      bottomNavigationBar: TabBar( tabs: [
-          Tab(icon: Icon(Icons.home),),
-          Tab(icon: Icon(Icons.settings),),
-          Tab(icon: Icon(Icons.person),),
-          Tab(icon: Icon(Icons.calendar_month),),
-        ],
-      ),
-      body: TabBarView( children: [
-        Icon(Icons.home),
-        Icon(Icons.settings),
-        Icon(Icons.person),
-        Icon(Icons.calendar_month),
-      ]
-    )
-    ));
-  }
+  Widget build(BuildContext context) => Scaffold(
+        body: screens2[pageIndex],
+        bottomNavigationBar: NavigationBar(
+          onDestinationSelected: (pageIndex) =>
+              setState(() => this.pageIndex = pageIndex),
+          destinations: const [
+            NavigationDestination(
+                icon: Icon(Icons.home),
+                label: 'Home'
+            ),
+            NavigationDestination(
+                icon: Icon(Icons.settings),
+                label: 'Settings'
+            ),
+            NavigationDestination(
+                icon: Icon(Icons.person),
+                label: 'Person'
+            ),
+            NavigationDestination(
+                icon: Icon(Icons.calendar_month),
+                label: 'Calendar'
+            ),
+            NavigationDestination(
+                icon: Icon(Icons.explore),
+                label: 'Explore'
+            )
+          ],
+        ),
+  );
+  
 }
