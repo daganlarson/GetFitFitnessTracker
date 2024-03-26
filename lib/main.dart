@@ -1,6 +1,9 @@
 //import 'dart:html';
 
+import 'package:binarybrigade/pages/calendar_page.dart';
 import 'package:binarybrigade/pages/distance_page.dart';
+import 'package:binarybrigade/pages/person_page.dart';
+import 'package:binarybrigade/pages/settings_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -28,6 +31,14 @@ class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
   @override
+  Widget build(BuildContext context) => Scaffold(
+    appBar: AppBar(
+      title: Text('Home'),
+    ),
+    body: Center(child: Text('Home Page')),
+  );
+
+  @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
@@ -36,21 +47,16 @@ class _MyHomePageState extends State<MyHomePage> {
   int pageIndex = 0;
   //these screens are the different pages that will be connected to the tabs
   final screens = [
+    MyHomePage(),
+    SettingsPage(),
+    PersonPage(),
+    CalendarPage(),
     DistancePage(),
-    const MyHomePage(),
-  ];
-  //these are testing screens to make sure the changing of tabs works
-  final screens2 = [
-    const Center(child: Text('home')),
-    const Center(child: Text('settings')),
-    const Center(child: Text('person')),
-    const Center(child: Text('calendar')),
-    const Center(child: Text('explore')),
   ];
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        body: screens2[pageIndex],
+        body: screens[pageIndex],
         bottomNavigationBar: NavigationBar(
           onDestinationSelected: (pageIndex) =>
               setState(() => this.pageIndex = pageIndex),
