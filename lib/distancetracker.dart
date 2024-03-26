@@ -1,4 +1,5 @@
 
+import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
 
 Future<bool> determinePermissions() async {
@@ -35,7 +36,7 @@ Future<bool> determinePermissions() async {
   return true;
 }
 
-class DistanceTracker {
+class DistanceTrackerWidget extends StatefulWidget {
 
   double m_distanceTraveled = 0;
   Future<bool> m_permissionsEnabled = determinePermissions();
@@ -63,4 +64,11 @@ class DistanceTracker {
 
   }
 
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    throw UnimplementedError();
+  }
+
 }
+

@@ -1,3 +1,5 @@
+//import 'dart:html';
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -60,11 +62,17 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return const DefaultTabController(length: 5, child: Scaffold(
       bottomNavigationBar: TabBar( tabs: [
-          Tab(icon: Icon(Icons.home),),
-          Tab(icon: Icon(Icons.settings),),
-          Tab(icon: Icon(Icons.person),),
-          Tab(icon: Icon(Icons.calendar_month),),
-          Tab(icon: Icon(Icons.explore),),
+          Tab(
+            icon: Icon(Icons.home),),
+          Tab(
+            icon: Icon(Icons.settings),),
+          Tab(
+            icon: Icon(Icons.person),),
+          Tab(
+            icon: Icon(Icons.calendar_month),),
+          Tab(
+            icon: Icon(Icons.explore),
+            text: 'Track'),
         ],
       ),
       body: TabBarView( children: [
@@ -73,6 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
         Icon(Icons.person),
         Icon(Icons.calendar_month),
         Icon(Icons.explore),
+
       ]
     )
     ));
