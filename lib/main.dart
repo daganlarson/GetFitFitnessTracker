@@ -18,18 +18,6 @@ List<Event> eventList = <Event>[];
 
 
 void main() async{
-  checkLocation();
-
-  results = await searchEvents();
-  results is List;
-  for(int x=0; x<results.length; x++){
-    Event tempEvent= Event(results[x]);
-    eventList.add(tempEvent);
-  }
-  runApp(const MyApp());
-}
-
-void checkLocation() async{
   WidgetsFlutterBinding.ensureInitialized();
 
   var status = await Permission.locationWhenInUse.status;
@@ -41,11 +29,23 @@ void checkLocation() async{
   try {
     List<Placemark> placemarks = await placemarkFromCoordinates(
       position.latitude,
-      position.longitude,
+      position.longitude
     );
     curCity = placemarks[0].locality.toString();
     curState= placemarks[0].administrativeArea.toString();
   }catch(err){}
+
+  results = await searchEvents();
+  results is List;
+  for(int x=0; x<results.length; x++){
+    Event tempEvent= Event(results[x]);
+    eventList.add(tempEvent);
+  }
+  runApp(const MyApp());
+}
+
+void checkLocation() async{
+
 }
 
 Future<List> searchEvents() async{
