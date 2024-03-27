@@ -1,6 +1,9 @@
 //import 'dart:html';
 
+import 'package:binarybrigade/pages/calendar_page.dart';
 import 'package:binarybrigade/pages/distance_page.dart';
+import 'package:binarybrigade/pages/person_page.dart';
+import 'package:binarybrigade/pages/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:binarybrigade/event.dart';
 import 'package:binarybrigade/eventwidget.dart';
@@ -9,7 +12,7 @@ import 'dart:convert';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:permission_handler/permission_handler.dart';
-
+import 'distancetracker.dart';
 
 var results;
 String curCity ="";
@@ -17,36 +20,35 @@ String curState="";
 List<Event> eventList = <Event>[];
 
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   var status = await Permission.locationWhenInUse.status;
-  if(status.isDenied || status.isRestricted){
+  if (status.isDenied || status.isRestricted) {
     Permission.locationWhenInUse.request();
   }
 
-  var position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best).timeout(Duration(seconds: 5));
+  var position = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.best).timeout(Duration(seconds: 5));
   try {
     List<Placemark> placemarks = await placemarkFromCoordinates(
-      position.latitude,
-      position.longitude
+        position.latitude,
+        position.longitude
     );
     curCity = placemarks[0].locality.toString();
-    curState= placemarks[0].administrativeArea.toString();
-  }catch(err){}
+    curState = placemarks[0].administrativeArea.toString();
+  } catch (err) {}
 
   results = await searchEvents();
   results is List;
-  for(int x=0; x<results.length; x++){
-    Event tempEvent= Event(results[x]);
+  for (int x = 0; x < results.length; x++) {
+    Event tempEvent = Event(results[x]);
     eventList.add(tempEvent);
   }
+
   runApp(const MyApp());
 }
 
-void checkLocation() async{
-
-}
 
 Future<List> searchEvents() async{
   var query = "Exercise Events near $curCity, $curState";
@@ -55,13 +57,6 @@ Future<List> searchEvents() async{
   var response = await http.get(url);
   var theResults = jsonDecode(response.body);
   return theResults["events_results"];
-}
-
-void setEvents(List<dynamic> events) async{
-  for(int x=0; x<events.length; x++){
-    Event tempEvent= Event(results[x]);
-    eventList.add(tempEvent);
-  }
 }
 
 class MyApp extends StatelessWidget {
@@ -85,18 +80,30 @@ class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
   @override
+  Widget build(BuildContext context) => Scaffold(
+    appBar: AppBar(
+      title: Text('Home'),
+    ),
+    body: Center(child: Text('Home Page')),
+  );
+
+  @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
 
+  DistanceTracker myTracker = DistanceTracker();
+  bool distanceTrackerToggle = false;
   int pageIndex = 0;
   //these screens are the different pages that will be connected to the tabs
-  final screens = [
-    const DistancePage(),
-    const MyHomePage(),
-  ];
-  //these are testing screens to make sure the changing of tabs works
+  /*final screens = [
+    MyHomePage(),
+    SettingsPage(),
+    PersonPage(),
+    CalendarPage(),
+    DistancePage(),
+  ]; */
   final screens2 = [
     Center(child:
     Column(
@@ -116,34 +123,35 @@ class _MyHomePageState extends State<MyHomePage> {
   ];
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        body: screens2[pageIndex],
-        bottomNavigationBar: NavigationBar(
-          onDestinationSelected: (pageIndex) =>
-              setState(() => this.pageIndex = pageIndex),
-          destinations: const [
-            NavigationDestination(
-                icon: Icon(Icons.home),
-                label: 'Home'
-            ),
-            NavigationDestination(
-                icon: Icon(Icons.settings),
-                label: 'Settings'
-            ),
-            NavigationDestination(
-                icon: Icon(Icons.person),
-                label: 'Person'
-            ),
-            NavigationDestination(
-                icon: Icon(Icons.calendar_month),
-                label: 'Calendar'
-            ),
-            NavigationDestination(
-                icon: Icon(Icons.explore),
-                label: 'Explore'
-            )
-          ],
+  Widget build(BuildContext context) => Scaffold (
+
+      body: screens2[pageIndex],
+    bottomNavigationBar:
+    NavigationBar(
+      onDestinationSelected: (pageIndex) =>
+          setState(() => this.pageIndex = pageIndex),
+      destinations: const [
+        NavigationDestination(
+            icon: Icon(Icons.home),
+            label: 'Home'
         ),
+        NavigationDestination(
+            icon: Icon(Icons.settings),
+            label: 'Settings'
+        ),
+        NavigationDestination(
+            icon: Icon(Icons.person),
+            label: 'Person'
+        ),
+        NavigationDestination(
+            icon: Icon(Icons.calendar_month),
+            label: 'Calendar'
+        ),
+        NavigationDestination(
+            icon: Icon(Icons.explore),
+            label: 'Explore'
+        )
+      ],
+    )
   );
-  
 }

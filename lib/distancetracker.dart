@@ -1,4 +1,6 @@
 
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -8,7 +10,7 @@ Future<bool> determinePermissions() async {
 
   serviceEnabled = await Geolocator.isLocationServiceEnabled();
   if (!serviceEnabled) {
-    print('Location services are disabled.');
+    log('Location services are disabled.');
     return false;
   }
 
@@ -21,14 +23,14 @@ Future<bool> determinePermissions() async {
       // Android's shouldShowRequestPermissionRationale
       // returned true. According to Android guidelines
       // your App should show an explanatory UI now.
-      print('Location permissions are denied.');
+      log('Location permissions are denied.');
       return false;
     }
   }
 
   if (permission == LocationPermission.deniedForever) {
     // Permissions are denied forever, handle appropriately.
-    print(
+    log(
         'Location permissions are permanently denied, we cannot request permissions.');
     return false;
   }
@@ -40,36 +42,43 @@ class DistanceTracker {
 
   double m_distanceTraveled = 0;
   Future<bool> m_permissionsEnabled = determinePermissions();
-  bool m_trackLocation = false;
+  bool m_locationToggle = false;
   late Position m_currentPosition;
   late Position m_lastPosition;
   late DateTime m_startTime;
   late DateTime m_endTime;
-  late final m_difference;
+  late var m_difference;
 
+  DistanceTracker();
   Future<void> trackDistanceTraveled() async{
-
-    m_currentPosition = await Geolocator.getCurrentPosition();
 
     while (await m_permissionsEnabled != true) {
 
-      print('Permissions do not allow location tracking');
+      log('Permissions do not allow location tracking');
       m_permissionsEnabled = determinePermissions();
     }
     m_lastPosition = m_currentPosition;
     m_currentPosition = await Geolocator.getCurrentPosition();
+
+    m_currentPosition = await Geolocator.getCurrentPosition();
+    log('First Current location: $m_currentPosition');
     m_startTime = DateTime.now();
 
-    while (m_trackLocation) {
+    while (m_locationToggle) {
 
+      m_lastPosition = m_currentPosition;
+      m_currentPosition = await Geolocator.getCurrentPosition();
+      log('Location: $m_currentPosition');
       m_distanceTraveled += Geolocator.distanceBetween(m_lastPosition.latitude.toDouble(), m_lastPosition.longitude.toDouble(), m_currentPosition.latitude.toDouble(), m_currentPosition.longitude.toDouble());
-      print('Current distance traveled: $m_distanceTraveled');
     }
     m_endTime = DateTime.now();
     m_difference = m_endTime.difference(m_startTime);
-    print('The duration of your workout was: $m_difference');
+
+    log('The duration of your workout was: $m_difference');
+    log('The total distance you traveled was: $m_distanceTraveled');
 
   }
+
 
 }
 
