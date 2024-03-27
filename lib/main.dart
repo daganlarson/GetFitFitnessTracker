@@ -59,8 +59,9 @@ class _MyHomePageState extends State<MyHomePage> {
   ]; */
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold (
+
+    /*return Scaffold(
       //=> Scaffold(
       //body: screens[pageIndex],
         body: Center(
@@ -74,35 +75,37 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         )
     );
-  }
- /*
+  } */
+    screens2 = [
+      
+    ];
 
-        bottomNavigationBar: NavigationBar(
-          onDestinationSelected: (pageIndex) =>
-              setState(() => this.pageIndex = pageIndex),
-          destinations: const [
-            NavigationDestination(
-                icon: Icon(Icons.home),
-                label: 'Home'
-            ),
-            NavigationDestination(
-                icon: Icon(Icons.settings),
-                label: 'Settings'
-            ),
-            NavigationDestination(
-                icon: Icon(Icons.person),
-                label: 'Person'
-            ),
-            NavigationDestination(
-                icon: Icon(Icons.calendar_month),
-                label: 'Calendar'
-            ),
-            NavigationDestination(
-                icon: Icon(Icons.explore),
-                label: 'Explore'
-            )
-          ],
+    bottomNavigationBar:
+    NavigationBar(
+      onDestinationSelected: (pageIndex) =>
+          setState(() => this.pageIndex = pageIndex),
+      destinations: const [
+        NavigationDestination(
+            icon: Icon(Icons.home),
+            label: 'Home'
         ),
-  ); */
-  
+        NavigationDestination(
+            icon: Icon(Icons.settings),
+            label: 'Settings'
+        ),
+        NavigationDestination(
+            icon: Icon(Icons.person),
+            label: 'Person'
+        ),
+        NavigationDestination(
+            icon: Icon(Icons.calendar_month),
+            label: 'Calendar'
+        ),
+        NavigationDestination(
+            icon: Icon(Icons.explore),
+            label: 'Explore'
+        )
+      ],
+    )
+  );
 }
