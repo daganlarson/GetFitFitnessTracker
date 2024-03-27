@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:binarybrigade/workout.dart';
 import 'package:flutter/services.dart';
@@ -10,7 +11,7 @@ void main() {
   // Run the app with LogWorkout widget
   runApp(MaterialApp(home: LogWorkout(workout: workout, exercise: exercise)));
 }
-
+//needs to be stateful
 class LogWorkout extends StatelessWidget {
   const LogWorkout({
     Key? key,
@@ -98,6 +99,16 @@ class LogWorkout extends StatelessWidget {
                               });
                             },
                           ),
+                          TextFormField(
+                            decoration: const InputDecoration(
+                              labelText: 'Weight used', icon: Icon(Icons.monitor_weight)),
+                            keyboardType: TextInputType.number,
+                            onChanged: (value) {
+                              workout.m_listOfExercises.forEach((exercise) {
+                                exercise.m_weightUsed = int.parse(value);
+                              });
+                            },
+                            )
                         ],
                       ),
                     ),
