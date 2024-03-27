@@ -43,6 +43,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final db = FirebaseFirestore.instance.collection('users');
+  final auth = FirebaseAuth.instance;
   int _counter = 0;
 
   Future<void> getData() async {
@@ -53,6 +54,15 @@ class _MyHomePageState extends State<MyHomePage> {
         print('${docSnapshot.id} => ${docSnapshot.data()}');
       }
     }, onError: (e) => print("error completeing: $e"),);
+  }
+
+  Future<void> createAccount() async {
+    print("pushed");
+    UserCredential cred = await auth.createUserWithEmailAndPassword(email: "daganlarson@gmail.com", password: "password");
+    User? user = cred.user;
+    if (user != null) {
+      print(user.uid);
+    }
   }
 
   void _incrementCounter() {
@@ -114,7 +124,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: getData,
+        onPressed: createAccount,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
