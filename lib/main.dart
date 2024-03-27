@@ -67,10 +67,9 @@ class _MyHomePageState extends State<MyHomePage> {
           child: ElevatedButton(
             child: const Text('Track Distance'),
             onPressed: () {
-              distanceTrackerToggle = !distanceTrackerToggle;
-              if (distanceTrackerToggle) {
+              myTracker.m_locationToggle = !myTracker.m_locationToggle;
+              if (myTracker.m_locationToggle)
                 myTracker.trackDistanceTraveled();
-              }
             },
           ),
         )

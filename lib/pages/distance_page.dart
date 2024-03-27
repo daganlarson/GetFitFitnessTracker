@@ -10,25 +10,18 @@ class DistancePage extends StatefulWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Distance Tracker'
+      //=> Scaffold(
+      //body: screens[pageIndex],
+        body: Center(
+          child: ElevatedButton(
+            child: const Text('Track Distance'),
+            onPressed: () {
+              myTracker.m_locationToggle = !myTracker.m_locationToggle;
+              if (myTracker.m_locationToggle)
+                myTracker.trackDistanceTraveled();
+            },
+          ),
         )
-      ),
-      body:
-        ElevatedButton(
-
-          child: const Text('Track Distance'),
-          onPressed: () {
-            distanceTrackerToggle = !distanceTrackerToggle;
-            if (distanceTrackerToggle) {
-              myTracker.trackDistanceTraveled();
-            }
-          },
-        ),
-      bottomSheet:
-        Text('The distance of your workout was: ${myTracker.getDistance()}. The time it took to complete your workout was: ${myTracker.m_difference}' ),
-
     );
   }
   

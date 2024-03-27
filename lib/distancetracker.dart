@@ -42,17 +42,18 @@ class DistanceTracker {
 
   double m_distanceTraveled = 0;
   Future<bool> m_permissionsEnabled = determinePermissions();
-  bool m_trackLocation = false;
+  bool m_locationToggle = false;
   late Position m_currentPosition;
   late Position m_lastPosition;
   late DateTime m_startTime;
   late DateTime m_endTime;
-  late final m_difference;
+  late var m_difference;
 
   DistanceTracker();
   Future<void> trackDistanceTraveled() async{
 
     m_currentPosition = await Geolocator.getCurrentPosition();
+    log('First Current location: $m_currentPosition');
 
     while (await m_permissionsEnabled != true) {
 
@@ -61,24 +62,24 @@ class DistanceTracker {
     }
     m_lastPosition = m_currentPosition;
     m_currentPosition = await Geolocator.getCurrentPosition();
+
     m_startTime = DateTime.now();
 
-    while (m_trackLocation) {
+    while (m_locationToggle) {
 
+      m_lastPosition = m_currentPosition;
+      m_currentPosition = await Geolocator.getCurrentPosition();
+      log('Location: $m_currentPosition');
       m_distanceTraveled += Geolocator.distanceBetween(m_lastPosition.latitude.toDouble(), m_lastPosition.longitude.toDouble(), m_currentPosition.latitude.toDouble(), m_currentPosition.longitude.toDouble());
-      log('Current distance traveled: $m_distanceTraveled');
     }
     m_endTime = DateTime.now();
     m_difference = m_endTime.difference(m_startTime);
+
     log('The duration of your workout was: $m_difference');
+    log('The total distance you traveled was: $m_distanceTraveled');
 
   }
-  void changeTrackLocation() {
-    m_trackLocation = !m_trackLocation;
-  }
-  double getDistance() {
-    return m_distanceTraveled;
-  }
+
 
 }
 
