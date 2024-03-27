@@ -52,9 +52,6 @@ class DistanceTracker {
   DistanceTracker();
   Future<void> trackDistanceTraveled() async{
 
-    m_currentPosition = await Geolocator.getCurrentPosition();
-    log('First Current location: $m_currentPosition');
-
     while (await m_permissionsEnabled != true) {
 
       log('Permissions do not allow location tracking');
@@ -63,6 +60,8 @@ class DistanceTracker {
     m_lastPosition = m_currentPosition;
     m_currentPosition = await Geolocator.getCurrentPosition();
 
+    m_currentPosition = await Geolocator.getCurrentPosition();
+    log('First Current location: $m_currentPosition');
     m_startTime = DateTime.now();
 
     while (m_locationToggle) {

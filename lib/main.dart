@@ -57,29 +57,18 @@ class _MyHomePageState extends State<MyHomePage> {
     CalendarPage(),
     DistancePage(),
   ]; */
+  final screens2 = [
+    const Center(child: Text('home')),
+    const Center(child: Text('settings')),
+    const Center(child: Text('person')),
+    const Center(child: Text('calendar')),
+    const Center(child: Text('explore')),
+  ];
 
   @override
   Widget build(BuildContext context) => Scaffold (
 
-    /*return Scaffold(
-      //=> Scaffold(
-      //body: screens[pageIndex],
-        body: Center(
-          child: ElevatedButton(
-            child: const Text('Track Distance'),
-            onPressed: () {
-              myTracker.m_locationToggle = !myTracker.m_locationToggle;
-              if (myTracker.m_locationToggle)
-                myTracker.trackDistanceTraveled();
-            },
-          ),
-        )
-    );
-  } */
-    screens2 = [
-      
-    ];
-
+      body: screens2[pageIndex],
     bottomNavigationBar:
     NavigationBar(
       onDestinationSelected: (pageIndex) =>
