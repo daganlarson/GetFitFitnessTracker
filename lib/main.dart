@@ -44,7 +44,7 @@ void main() async {
     eventList.add(tempEvent);
   }
 
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 
@@ -70,22 +70,25 @@ class MyApp extends StatelessWidget {
       ),
       home: const MyHomePage(),
     );
+  }
 }
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(
-      title: Text('Home'),
-    ),
-    body: Center(child: Text('Home Page')),
-  );
+  Widget build(BuildContext context) =>
+      Scaffold(
+        appBar: AppBar(
+          title: Text('Home'),
+        ),
+        body: Center(child: Text('Home Page')),
+      );
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
+
 
 class _MyHomePageState extends State<MyHomePage> {
   DistanceTracker myTracker = DistanceTracker();
@@ -150,3 +153,4 @@ class _MyHomePageState extends State<MyHomePage> {
     )
   );
 }
+
