@@ -60,7 +60,6 @@ class DistanceTracker {
     m_lastPosition = m_currentPosition;
     m_currentPosition = await Geolocator.getCurrentPosition();
 
-    m_currentPosition = await Geolocator.getCurrentPosition();
     log('First Current location: $m_currentPosition');
     m_startTime = DateTime.now();
 
@@ -78,7 +77,6 @@ class DistanceTracker {
     log('The total distance you traveled was: $m_distanceTraveled');
 
   }
-
 
 }
 
