@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class Workout {
@@ -7,14 +8,34 @@ class Workout {
   late DateTime m_timeEnd;
   late var m_listOfExercises = <Exercise>{};
 
-  Workout(String date, DateTime timeStart, DateTime timeEnd) {
-
+  Workout(String date, DateTime timeStart, DateTime timeEnd, Set<Exercise>? exercises) {
     m_date = date;
     m_timeStart = timeStart;
     m_timeEnd = timeEnd;
+    if (exercises != null) {
+      m_listOfExercises = exercises;
+    }
   }
   void addExercise(Exercise myExercise) {
     m_listOfExercises.add(myExercise);
+  }
+
+  factory Workout.fromFireStore(DocumentSnapshot<Map<String, dynamic>> snapshot, SnapshotOptions? options,) {
+    final data = snapshot.data();
+    return Workout(
+        data?['date'],
+        data?['startTime'],
+        data?['endTime'],
+        data?['exercises'] is Iterable ? Set.from(data?['exercises']) : null);
+  }
+
+  Map<String, dynamic> toFirestore() {
+    return {
+      'date': m_date,
+      'startTime': m_timeStart,
+      'endTime': m_timeEnd,
+      if (m_listOfExercises != null) 'exercises': m_listOfExercises,
+    };
   }
 }
 

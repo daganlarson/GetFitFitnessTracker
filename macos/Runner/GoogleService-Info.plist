@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyBKb50_iL-r-TC-VJLg7CbzljPVs9d9hTw</string>
+	<key>GCM_SENDER_ID</key>
+	<string>202635662089</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.binarybrigade.RunnerTests</string>
+	<key>PROJECT_ID</key>
+	<string>binary-brigade-get-fit</string>
+	<key>STORAGE_BUCKET</key>
+	<string>binary-brigade-get-fit.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:202635662089:ios:99500f698b7c389d4279d8</string>
+</dict>
+</plist>

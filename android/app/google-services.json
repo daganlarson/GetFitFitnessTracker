@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "202635662089",
+    "project_id": "binary-brigade-get-fit",
+    "storage_bucket": "binary-brigade-get-fit.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:202635662089:android:904c67d1261467df4279d8",
+        "android_client_info": {
+          "package_name": "com.example.binarybrigade"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDrFIE3Z6ShEByHM6myCSI_PH_HGUvWNMs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
