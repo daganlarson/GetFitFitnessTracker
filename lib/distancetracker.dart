@@ -1,41 +1,17 @@
 import 'dart:async';
+import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:geolocator_android/geolocator_android.dart';
 
-
-bool m_trackDistance = false;
-double m_distanceInMeters = 0;
-Future<Position> m_firstPosition = _determinePosition();
-
-StreamSubscription<Position> positionStream = Geolocator.getPositionStream(locationSettings: myLocationSettings).listen(
-        (Position? position) {
-      print(position == null ? 'Unknown' : '${position.latitude.toString()}, ${position.longitude.toString()}');
-      m_distanceInMeters += 10;
-    }
-);
-
-final LocationSettings myLocationSettings = LocationSettings(
-  accuracy: LocationAccuracy.high,
-  distanceFilter: 10,
-);
-
-
-/// Determine the current position of the device.
-///
-/// When the location services are not enabled or permissions
-/// are denied the `Future` will return an error.
-Future<Position> _determinePosition() async {
+Future<bool> determinePermissions() async {
   bool serviceEnabled;
   LocationPermission permission;
 
-  // Test if location services are enabled.
   serviceEnabled = await Geolocator.isLocationServiceEnabled();
   if (!serviceEnabled) {
-    // Location services are not enabled don't continue
-    // accessing the position and request users of the
-    // App to enable the location services.
-    return Future.error('Location services are disabled.');
+    log('Location services are disabled.');
+    return false;
   }
 
   permission = await Geolocator.checkPermission();
@@ -47,17 +23,62 @@ Future<Position> _determinePosition() async {
       // Android's shouldShowRequestPermissionRationale
       // returned true. According to Android guidelines
       // your App should show an explanatory UI now.
-      return Future.error('Location permissions are denied');
+      log('Location permissions are denied.');
+      return false;
     }
   }
 
   if (permission == LocationPermission.deniedForever) {
     // Permissions are denied forever, handle appropriately.
-    return Future.error(
+    log(
         'Location permissions are permanently denied, we cannot request permissions.');
+    return false;
   }
 
-  // When we reach here, permissions are granted and we can
-  // continue accessing the position of the device.
-  return await Geolocator.getCurrentPosition();
+  return true;
 }
+
+class DistanceTracker {
+
+  double m_distanceTraveled = 0;
+  Future<bool> m_permissionsEnabled = determinePermissions();
+  bool m_locationToggle = false;
+  late Position m_currentPosition;
+  late Position m_lastPosition;
+  late DateTime m_startTime;
+  late DateTime m_endTime;
+  late var m_difference;
+
+  DistanceTracker();
+  Future<void> trackDistanceTraveled() async{
+
+    while (await m_permissionsEnabled != true) {
+
+      log('Permissions do not allow location tracking');
+      m_permissionsEnabled = determinePermissions();
+    }
+    m_lastPosition = m_currentPosition;
+    m_currentPosition = await Geolocator.getCurrentPosition();
+
+    m_currentPosition = await Geolocator.getCurrentPosition();
+    log('First Current location: $m_currentPosition');
+    m_startTime = DateTime.now();
+
+    while (m_locationToggle) {
+
+      m_lastPosition = m_currentPosition;
+      m_currentPosition = await Geolocator.getCurrentPosition();
+      log('Location: $m_currentPosition');
+      m_distanceTraveled += Geolocator.distanceBetween(m_lastPosition.latitude.toDouble(), m_lastPosition.longitude.toDouble(), m_currentPosition.latitude.toDouble(), m_currentPosition.longitude.toDouble());
+    }
+    m_endTime = DateTime.now();
+    m_difference = m_endTime.difference(m_startTime);
+
+    log('The duration of your workout was: $m_difference');
+    log('The total distance you traveled was: $m_distanceTraveled');
+
+  }
+
+
+}
+
