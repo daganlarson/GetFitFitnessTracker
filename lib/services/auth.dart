@@ -16,9 +16,8 @@ class Auth implements BasicAuth {
   }
 
   @override
-  Future<String?> getUserId() async {
+  Future<String> getUserId() async {
     User? user = FirebaseAuth.instance.currentUser;
-    // TODO implement this function
     return "Vv3z8wmZVfgsby0yaj7agaQarL72";
   }
 
