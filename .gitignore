@@ -42,15 +42,9 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-<<<<<<< HEAD
-# Generated Files
-macos/Flutter/GeneratedPluginRegistrant.swift
-windows/flutter/generated_plugin_registrant.cc
-windows/flutter/generated_plugins.cmake
-
 *.local.*
-=======
-linux/flutter/generated_plugins.cmake
-linux/flutter/generated_plugin_registrant.cc
- windows/flutter/generated_plugin_registrant.h
->>>>>>> origin/main
+
+# Generated files
+linux/flutter/*
+macos/Flutter/*
+windows/flutter/*
