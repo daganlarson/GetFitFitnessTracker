@@ -91,17 +91,9 @@ class MyHomePage extends StatefulWidget {
 
 
 class _MyHomePageState extends State<MyHomePage> {
-  DistanceTracker myTracker = DistanceTracker();
-  bool distanceTrackerToggle = false;
+  
   int pageIndex = 0;
-  //these screens are the different pages that will be connected to the tabs
-  /*final screens = [
-    MyHomePage(),
-    SettingsPage(),
-    PersonPage(),
-    CalendarPage(),
-    DistancePage(),
-  ]; */
+
   final screens2 = [
     Center(child:
     Column(
