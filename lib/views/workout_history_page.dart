@@ -1,11 +1,10 @@
 
 import 'package:binarybrigade/models/workout.dart';
+import 'package:binarybrigade/models/firestore.dart';
+import 'package:binarybrigade/views/log_workout.dart';
 import 'dart:core';
 
 import 'package:flutter/material.dart';
-//import 'package:english_words/english_words.dart';
-import 'package:firebase_core/firebase_core.dart';
-//import 'package:firebase_database/firebase_database.dart';
 
 class WorkoutHistory extends StatefulWidget {
   const WorkoutHistory({super.key});
@@ -22,21 +21,17 @@ class _WorkoutHistoryState extends State<WorkoutHistory> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Workout History'),
-      ),
-      body: ListView.builder(
-        itemCount: previousWorkouts.length,
-        itemBuilder: (context, index) {
-          Workout workout = previousWorkouts[index];
-          return ListTile(
-            title: Text('Date: ${workout.m_date}'),
-            subtitle: Text('Time Started: ${workout.m_timeStart.toString()}, Time Ended: ${workout.m_timeEnd.toString()}'),
-            // Add more details as needed
-          );
-        },
-      ),
-    );
-  }
+      return Scaffold(
+        appBar: AppBar(
+          title: Text('Workout History'),
+        ),
+        body: ListView.builder(
+          itemCount: 0, // Set itemCount to 0 for an empty list
+          itemBuilder: (context, index) {
+            // Return an empty container since there are no items to display
+            return Container();
+          },
+        ),
+      );
+    }
 }
