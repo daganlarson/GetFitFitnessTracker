@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../distancetracker.dart';
+import 'distance_page.dart';
 import 'eventwidget.dart';
 import '../main.dart';
 import 'settings_page.dart';
@@ -43,7 +44,7 @@ class _HomePageState extends State<HomePage> {
     const SettingsPage(),
     const WorkoutPage(),
     const Center(child: Text('calendar')),
-    const Center(child: Text('explore')),
+    DistancePage(),
   ];
 
   @override
