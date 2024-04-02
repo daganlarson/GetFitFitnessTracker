@@ -10,9 +10,11 @@ import 'home_page.dart';
 class RootPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => LoginStatus.instance(),
-      child: Consumer(
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => LoginStatus.instance()),
+      ],
+      child: Consumer<LoginStatus>(
         builder: (context, LoginStatus loginStatus, _) {
           switch (loginStatus.status) {
             case Status.Uninitialized:
@@ -22,11 +24,12 @@ class RootPage extends StatelessWidget {
               return const LoginPage();
             case Status.Authenticated:
               return const HomePage();
-              default:
-                return const LoginPage();
+            default:
+              return const LoginPage();
           }
         },
-      ),
+    ),
+
     );
   }
 

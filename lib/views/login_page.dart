@@ -58,16 +58,17 @@ class _LoginPageState extends State<LoginPage> {
                   prefixIcon: Icon(Icons.lock),
                   labelText: "Password",
                   border: OutlineInputBorder()),
+
                 ),
               ),
               user.status == Status.Authenticating
                   ? const Center(child: CircularProgressIndicator())
                   : Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      padding: const EdgeInsets.all(16.0),
                       child: Material(
                       elevation: 5.0,
                       borderRadius: BorderRadius.circular(30.0),
-                      color: Colors.red,
+                      color: Colors.deepPurple,
                       child: MaterialButton(
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
@@ -80,6 +81,23 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       ),
                   ),
+                  user.status == Status.Authenticating
+                  ? const Center(child: CircularProgressIndicator())
+                      : Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Material(
+                  elevation: 5.0,
+                  borderRadius: BorderRadius.circular(30.0),
+                  color: Colors.deepPurple,
+                  child: MaterialButton(
+                  onPressed: () async {
+                  if (_formKey.currentState!.validate()) {
+                  if (!await user.signUp(_email.text, _password.text)) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("something is wrong")));
+                  }
+                  }
+                  },
+                  child: const Text("Sign Up",))))
             ],
     ),),),);
   }
