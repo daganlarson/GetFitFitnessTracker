@@ -1,7 +1,10 @@
 import 'package:binarybrigade/pages/calendar_page.dart';
 import 'package:binarybrigade/pages/distance_page.dart';
+import 'package:binarybrigade/pages/log_workout.dart';
+import 'package:binarybrigade/pages/login_page.dart';
 import 'package:binarybrigade/pages/person_page.dart';
 import 'package:binarybrigade/pages/settings_page.dart';
+import 'package:binarybrigade/workout.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:binarybrigade/event.dart';
@@ -79,7 +82,7 @@ class MyApp extends StatelessWidget {
                 colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
                 useMaterial3: true,
               ),
-              home: const HomePage(title: 'Flutter Demo Home Page'),
+              home: const LoginPage(),
             );
           } else {
             Widget loading = const MaterialApp();
@@ -89,85 +92,5 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key, required this.title});
 
-  final String title;
-  @override
-  Widget build(BuildContext context) =>
-      Scaffold(
-        appBar: AppBar(
-          title: Text('Home'),
-        ),
-        body: Center(child: Text('Home Page')),
-      );
-
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  DistanceTracker myTracker = DistanceTracker();
-  bool distanceTrackerToggle = false;
-  int pageIndex = 0;
-  //these screens are the different pages that will be connected to the tabs
-  /*final screens = [
-    MyHomePage(),
-    SettingsPage(),
-    PersonPage(),
-    CalendarPage(),
-    DistancePage(),
-  ]; */
-  final screens2 = [
-    Center(child:
-    Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        EventWidget(eventList[2]),
-        SizedBox(height:15),
-        EventWidget(eventList[1]),
-        SizedBox(height:15),
-        EventWidget(eventList[0]),
-      ],
-    )),
-    const Center(child: Text('settings')),
-    const Center(child: Text('person')),
-    const Center(child: Text('calendar')),
-    const Center(child: Text('explore')),
-  ];
-
-  @override
-  Widget build(BuildContext context) => Scaffold (
-
-      body: screens2[pageIndex],
-    bottomNavigationBar:
-    NavigationBar(
-      onDestinationSelected: (pageIndex) =>
-          setState(() => this.pageIndex = pageIndex),
-      destinations: const [
-        NavigationDestination(
-            icon: Icon(Icons.home),
-            label: 'Home'
-        ),
-        NavigationDestination(
-            icon: Icon(Icons.settings),
-            label: 'Settings'
-        ),
-        NavigationDestination(
-            icon: Icon(Icons.person),
-            label: 'Person'
-        ),
-        NavigationDestination(
-            icon: Icon(Icons.calendar_month),
-            label: 'Calendar'
-        ),
-        NavigationDestination(
-            icon: Icon(Icons.explore),
-            label: 'Explore'
-        )
-      ],
-    )
-  );
-}
 

@@ -1,11 +1,14 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:binarybrigade/workout.dart';
 import 'package:flutter/services.dart';
 
+import '../services/firestore.dart';
+
 void main() {
   //this is just for testing the file right now:
-  Workout workout = Workout('2024-03-18', DateTime.now(), DateTime.now());
+  Workout workout = Workout('2024-03-18', DateTime.now(), DateTime.now(), null);
   Exercise exercise = Exercise('Running', 10, 100);
 
   // Run the app with LogWorkout widget
@@ -138,7 +141,7 @@ class LogWorkout extends StatelessWidget {
   }
 
   void saveWorkout(Workout workout) {
-    //save to database here
+    Database.saveWorkout(workout);
     print('Workout logged: $workout');
   }
 

@@ -1,38 +1,17 @@
-
-import 'dart:html';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../workout.dart';
-import 'auth.dart';
-
-abstract class BaseDatabase {
-  Future<List<Workout>> getWorkouts(DateTimeRange range);
-  Future<Workout> getWorkout();
-  Future<Workout?> saveWorkout(Workout workout);
-}
-
-class Database implements BaseDatabase {
-  final Auth _auth = Auth();
-  String? _userId = "Vv3z8wmZVfgsby0yaj7agaQarL72";
-
-  Future<bool> _authComplete() async {
-    _userId = await _auth.getUserId();
-    if (_userId == null) {
-      throw Exception();
-    }
-    return _auth.authenticated();
-  }
 
 
-  @override
+class Database {
   Future<List<Workout>> getWorkouts(DateTimeRange range) async {
-    if (await _authComplete()) {
-      if (_userId == null) throw Exception();
+      if (FirebaseAuth.instance.currentUser == null) throw Exception();
+      String userId = FirebaseAuth.instance.currentUser!.uid;
+
       Query<Workout> query = FirebaseFirestore.instance.collection("users")
-          .doc(_userId).collection('workouts')
+          .doc(userId).collection('workouts')
           .withConverter(
           fromFirestore: Workout.fromFireStore,
           toFirestore: (Workout workout, options) => workout.toFirestore())
@@ -45,15 +24,15 @@ class Database implements BaseDatabase {
         data.add(x.data());
       }
       return data;
-    }
-    throw Exception();
   }
 
   @override
   Future<Workout> getWorkout() async {
-    if (await _authComplete()) {
-      final ref = await FirebaseFirestore.instance.collection("users")
-          .doc(_userId)
+    if (FirebaseAuth.instance.currentUser == null) throw Exception();
+    String userId = FirebaseAuth.instance.currentUser!.uid;
+
+    final ref = await FirebaseFirestore.instance.collection("users")
+          .doc(userId)
           .collection("workouts")
           .withConverter(
           fromFirestore: Workout.fromFireStore,
@@ -63,22 +42,20 @@ class Database implements BaseDatabase {
       QueryDocumentSnapshot<Workout> documentSnapshot = stuff[0];
       Workout workout = documentSnapshot.data();
       return workout;
-    }
-    throw Exception("unable to get workout");
   }
 
   @override
-  Future<Workout?> saveWorkout(Workout workout) async {
-    if (await _authComplete()) {
-      var result = await FirebaseFirestore.instance
-          .collection("users")
-          .doc(_userId)
-          .collection("workouts")
-          .withConverter(fromFirestore: Workout.fromFireStore,
-          toFirestore: (Workout workout, options) => workout.toFirestore())
-          .add(workout);
-      return workout;
-    }
-    return null;
+  static Future<bool> saveWorkout(Workout workout) async {
+    if (FirebaseAuth.instance.currentUser == null) throw Exception();
+    String userId = FirebaseAuth.instance.currentUser!.uid;
+
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(userId).collection("workouts")
+        .withConverter(
+        fromFirestore: Workout.fromFireStore,
+        toFirestore: (Workout workout, options) => workout.toFirestore())
+        .add(workout);
+    return true;
   }
 }

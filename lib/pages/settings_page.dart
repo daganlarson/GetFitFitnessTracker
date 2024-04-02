@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -14,9 +15,19 @@ class SettingsPage extends StatefulWidget {
 
 
   @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    throw UnimplementedError();
-  }
+  State<StatefulWidget> createState() => _SettingsPageState();
+}
 
+class _SettingsPageState extends State<SettingsPage> {
+  void logout() async {
+    FirebaseAuth.instance.signOut();
+  }
+  
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: ElevatedButton(onPressed: logout, child: Text("Logout"),),
+    );
+  }
+  
 }
