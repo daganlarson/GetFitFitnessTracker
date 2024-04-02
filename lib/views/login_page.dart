@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../pages/home_page.dart';
+import 'home_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -30,16 +30,23 @@ class _LoginPageState extends State<LoginPage> {
       UserCredential result = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: _email, password: _password);
       User? user = result.user;
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => const HomePage(title: 'Homepage',)),
-      );
+      if (user != null) {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const HomePage()));
+      }
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
+    if (FirebaseAuth.instance.currentUser != null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => const HomePage()),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(title: const Text("Login"),),
       body: Form(

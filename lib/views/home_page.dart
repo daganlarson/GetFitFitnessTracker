@@ -1,19 +1,14 @@
-import 'package:binarybrigade/pages/settings_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import '../distancetracker.dart';
-import '../eventwidget.dart';
+import 'eventwidget.dart';
 import '../main.dart';
-import '../workout.dart';
-import 'log_workout.dart';
-import 'login_page.dart';
+import 'settings_page.dart';
+import 'workout_page.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key, required this.title});
+  const HomePage({super.key});
 
-  final String title;
   @override
   Widget build(BuildContext context) =>
       Scaffold(
@@ -29,19 +24,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  User? user = FirebaseAuth.instance.currentUser;
   DistanceTracker myTracker = DistanceTracker();
   bool distanceTrackerToggle = false;
   int pageIndex = 0;
-  //these screens are the different pages that will be connected to the tabs
-  /*final screens = [
-    MyHomePage(),
-    SettingsPage(),
-    PersonPage(),
-    CalendarPage(),
-    DistancePage(),
-  ]; */
-  final screens2 = [
+
+  final screens = [
     Center(child:
     Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -54,7 +41,7 @@ class _HomePageState extends State<HomePage> {
       ],
     )),
     const SettingsPage(),
-    Center(child: LogWorkout(workout: Workout("Now", DateTime.now(), DateTime.now(), null), exercise: Exercise('Running', 10, 100))),
+    const WorkoutPage(),
     const Center(child: Text('calendar')),
     const Center(child: Text('explore')),
   ];
@@ -66,7 +53,8 @@ class _HomePageState extends State<HomePage> {
     }
 
     return Scaffold(
-        body: screens2[pageIndex],
+        appBar: AppBar(title: const Text("Homepage"),leading: null,),
+        body: screens[pageIndex],
         bottomNavigationBar:
         NavigationBar(
           onDestinationSelected: (pageIndex) =>

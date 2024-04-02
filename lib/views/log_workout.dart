@@ -1,10 +1,10 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:binarybrigade/workout.dart';
+import 'package:binarybrigade/models/workout.dart';
 import 'package:flutter/services.dart';
+import '../models/firestore.dart';
 
-import '../services/firestore.dart';
 
 void main() {
   //this is just for testing the file right now:

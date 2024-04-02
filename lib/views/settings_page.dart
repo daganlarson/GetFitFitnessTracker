@@ -21,12 +21,15 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   void logout() async {
     FirebaseAuth.instance.signOut();
+    Navigator.pop(context);
   }
   
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ElevatedButton(onPressed: logout, child: Text("Logout"),),
+      body: Center(
+        child: ElevatedButton(onPressed: logout, child: const Text("Logout"),),
+      )
     );
   }
   

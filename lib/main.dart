@@ -1,20 +1,16 @@
-import 'package:binarybrigade/pages/calendar_page.dart';
-import 'package:binarybrigade/pages/distance_page.dart';
-import 'package:binarybrigade/pages/log_workout.dart';
-import 'package:binarybrigade/pages/login_page.dart';
-import 'package:binarybrigade/pages/person_page.dart';
-import 'package:binarybrigade/pages/settings_page.dart';
-import 'package:binarybrigade/workout.dart';
+import 'package:binarybrigade/root_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import 'views/home_page.dart';
+import 'views/login_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:binarybrigade/event.dart';
-import 'package:binarybrigade/eventwidget.dart';
+import 'package:binarybrigade/models/event.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'distancetracker.dart';
 import 'firebase_options.dart';
 
 var results;
@@ -77,12 +73,12 @@ class MyApp extends StatelessWidget {
           }
           if (snapshot.connectionState == ConnectionState.done) {
             return MaterialApp(
-              title: 'Flutter Demo',
+              title: 'Binary Brigade',
               theme: ThemeData(
                 colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
                 useMaterial3: true,
               ),
-              home: const LoginPage(),
+              home: RootPage(),
             );
           } else {
             Widget loading = const MaterialApp();
