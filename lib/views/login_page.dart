@@ -1,8 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import 'home_page.dart';
+import '../providers/LoginProvider.dart';
+
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -12,82 +13,81 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  TextEditingController _email = TextEditingController();
+  TextEditingController _password = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  String _email = '';
-  String _password = '';
+  final _key = GlobalKey<ScaffoldState>();
 
-  void _signUp() async {
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
-      FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: _email, password: _password);
-    }
-  }
-
-  void _signIn() async {
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
-      UserCredential result = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: _email, password: _password);
-      User? user = result.user;
-      if (user != null) {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => const HomePage()));
-      }
-    }
+  @override
+  void initState() {
+    super.initState();
+    _email = TextEditingController(text: "");
+    _password = TextEditingController(text: "");
   }
 
 
   @override
   Widget build(BuildContext context) {
-    if (FirebaseAuth.instance.currentUser != null) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => const HomePage()),
-      );
-    }
-
+    final user = Provider.of<LoginStatus>(context);
     return Scaffold(
+      key: _key,
       appBar: AppBar(title: const Text("Login"),),
       body: Form(
         key: _formKey,
-        child: Column(
-          children: [
-            TextFormField(
-              decoration: const InputDecoration(labelText: 'Email'),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter your email';
-                }
-                return null;
-              },
-              onSaved: (value) {
-                _email = value!;
-              },
-            ),
-            TextFormField(
-              decoration: const InputDecoration(labelText: 'Password'),
-              obscureText: true,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter your password';
-                }
-                return null;
-              },
-              onSaved: (value) {
-                _password = value!;
-              },
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _signIn,
-              child: const Text('Login'),
-            ),
-            ElevatedButton(onPressed: _signUp, child: Text("Create Account")),
-          ],
-        ),
-      ),
-    );
+        child: Center(
+          child: ListView(
+            shrinkWrap: true,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: TextFormField(
+                  controller: _email,
+                  validator: (value) => (value == null || value.isEmpty) ? "Please Enter Email" : null,
+                  decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.email),
+                  labelText: "Email",
+                  border: OutlineInputBorder())
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: TextFormField(
+                  controller: _password,
+                  validator: (value) => (value == null || value.isEmpty) ? "Please Enter Password" : null,
+                  decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.lock),
+                  labelText: "Password",
+                  border: OutlineInputBorder()),
+                ),
+              ),
+              user.status == Status.Authenticating
+                  ? const Center(child: CircularProgressIndicator())
+                  : Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Material(
+                      elevation: 5.0,
+                      borderRadius: BorderRadius.circular(30.0),
+                      color: Colors.red,
+                      child: MaterialButton(
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          if (!await user.signIn(_email.text, _password.text)) {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("something is wrong")));
+                          }
+                        }
+                        },
+                        child: const Text("Sign In",),
+                      ),
+                      ),
+                  ),
+            ],
+    ),),),);
   }
-  
+
+  @override
+  void dispose() {
+    _email.dispose();
+    _password.dispose();
+    super.dispose();
+  }
 }

@@ -53,7 +53,6 @@ class _HomePageState extends State<HomePage> {
     }
 
     return Scaffold(
-        appBar: AppBar(title: const Text("Homepage"),leading: null,),
         body: screens[pageIndex],
         bottomNavigationBar:
         NavigationBar(

@@ -1,4 +1,4 @@
-import 'package:binarybrigade/root_page.dart';
+import 'package:binarybrigade/views/root_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'views/home_page.dart';
