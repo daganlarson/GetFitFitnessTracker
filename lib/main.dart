@@ -1,16 +1,17 @@
-import 'package:binarybrigade/pages/calendar_page.dart';
-import 'package:binarybrigade/pages/distance_page.dart';
-import 'package:binarybrigade/pages/person_page.dart';
-import 'package:binarybrigade/pages/settings_page.dart';
+import 'package:binarybrigade/views/root_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import 'views/home_page.dart';
+import 'views/login_page.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:binarybrigade/event.dart';
-import 'package:binarybrigade/eventwidget.dart';
+import 'package:binarybrigade/models/event.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'distancetracker.dart';
+import 'firebase_options.dart';
 
 var results;
 String curCity ="";
@@ -58,18 +59,32 @@ Future<List> searchEvents() async{
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(),
-    );
+    return FutureBuilder(
+        future: Firebase.initializeApp(
+            options: DefaultFirebaseOptions.currentPlatform),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            print("couldn't connect");
+          }
+          if (snapshot.connectionState == ConnectionState.done) {
+            return MaterialApp(
+              title: 'Binary Brigade',
+              theme: ThemeData(
+                colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+                useMaterial3: true,
+              ),
+              home: RootPage(),
+            );
+          } else {
+            Widget loading = const MaterialApp();
+            return loading;
+          }
+        });
   }
 }
 
@@ -88,7 +103,6 @@ class MyHomePage extends StatefulWidget {
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
-
 
 class _MyHomePageState extends State<MyHomePage> {
   
@@ -145,4 +159,3 @@ class _MyHomePageState extends State<MyHomePage> {
     )
   );
 }
-

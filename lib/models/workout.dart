@@ -24,8 +24,8 @@ class Workout {
     final data = snapshot.data();
     return Workout(
         data?['date'],
-        data?['startTime'],
-        data?['endTime'],
+        data?['startTime'].toDate(),
+        data?['endTime'].toDate(),
         data?['exercises'] is Iterable ? Set.from(data?['exercises']) : null);
   }
 
@@ -36,6 +36,11 @@ class Workout {
       'endTime': m_timeEnd,
       if (m_listOfExercises != null) 'exercises': m_listOfExercises,
     };
+  }
+
+  @override
+  String toString() {
+    return '{"date": "$m_date", "startTime": $m_timeStart, "endTime": $m_timeEnd, "exercises": $m_listOfExercises}';
   }
 }
 

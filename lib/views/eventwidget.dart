@@ -1,14 +1,12 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:binarybrigade/event.dart';
+import 'package:binarybrigade/models/event.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class EventWidget extends StatelessWidget {
   Event thisEvent;
   EventWidget(Event myEvent, {super.key}) : thisEvent = myEvent;
-
-
 
   @override
   Widget build(BuildContext context) {
