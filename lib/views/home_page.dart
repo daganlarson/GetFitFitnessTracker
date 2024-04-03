@@ -78,7 +78,7 @@ class _HomePageState extends State<HomePage> {
             ),
             NavigationDestination(
                 icon: Icon(Icons.explore),
-                label: 'Explore'
+                label: 'Distance'
             )
           ],
         )
