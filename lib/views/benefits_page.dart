@@ -9,7 +9,6 @@ class BenefitsPage extends StatefulWidget {
 
 class _BenefitsPageState extends State<BenefitsPage> {
 
-  late Container myContainer;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +18,7 @@ class _BenefitsPageState extends State<BenefitsPage> {
       ),
       body: ListView.builder(
         itemCount: 12,
-        itemBuilder: (context, index) =>CardItem(child: myContainer),
+        itemBuilder: (context, index) =>CardItem(),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
@@ -27,15 +26,12 @@ class _BenefitsPageState extends State<BenefitsPage> {
       )
 
     );
-
-
-
   }
 }
 
 class CardItem extends StatelessWidget {
   const CardItem({
-    super.key, required Container child,
+    super.key,
   });
 
   @override
@@ -43,17 +39,17 @@ class CardItem extends StatelessWidget {
     return Card(
       child: Container(
         height: 350.0,
-        color: Colors.red,
+        color: Colors.blue,
         child: Column(
           children: <Widget>[
-            ListTile(
+            const ListTile(
               leading: CircleAvatar(),
               title: Text("Benefits test"),
               subtitle: Text("subtitle test"),
             ),
             Expanded(
               child: Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   image: DecorationImage(
                     image: NetworkImage("https://static.vecteezy.com/system/resources/thumbnails/005/024/692/small/man-workout-in-gym-for-healthy-llifestyle-free-vector.jpg"),
                     fit: BoxFit.cover,
@@ -61,8 +57,8 @@ class CardItem extends StatelessWidget {
                 ),
               )
             ),
-            SizedBox(height: 14.0),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
+            const SizedBox(height: 14.0),
+            const Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               Row(
                 children: <Widget>[
@@ -72,10 +68,10 @@ class CardItem extends StatelessWidget {
                 ]
               )
             ]),
-            SizedBox(height: 12.0),
+            const SizedBox(height: 12.0),
           ],
         )
       )
-            );
+    );
   }
 }
