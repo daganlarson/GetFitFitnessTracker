@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 class BenefitsPage extends StatefulWidget {
@@ -49,15 +51,20 @@ class CardItem extends StatelessWidget {
             ),
             Expanded(
               child: Container(
-                decoration: const BoxDecoration(
+                /*decoration: const BoxDecoration(
                   image: DecorationImage(
                     image: NetworkImage("https://static.vecteezy.com/system/resources/thumbnails/005/024/692/small/man-workout-in-gym-for-healthy-llifestyle-free-vector.jpg"),
                     fit: BoxFit.cover,
                   )
-                ),
+                ), */
               )
             ),
             const SizedBox(height: 14.0),
+            IconButton(
+              icon: Image.asset('assets/Fitness Graphic.png'),
+              iconSize: 50,
+              onPressed: () { log('image button pressed'); },
+            ),
             const Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               Row(
