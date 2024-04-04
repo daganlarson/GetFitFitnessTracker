@@ -6,7 +6,7 @@ import 'workout.dart';
 
 
 class Database {
-  Future<List<Workout>> getWorkouts(DateTimeRange range) async {
+  static Future<List<Workout>> getWorkouts(DateTimeRange range) async {
       if (FirebaseAuth.instance.currentUser == null) throw Exception();
       String userId = FirebaseAuth.instance.currentUser!.uid;
 
@@ -26,8 +26,7 @@ class Database {
       return data;
   }
 
-  @override
-  Future<Workout> getWorkout() async {
+  static Future<Workout> getWorkout() async {
     if (FirebaseAuth.instance.currentUser == null) throw Exception();
     String userId = FirebaseAuth.instance.currentUser!.uid;
 
