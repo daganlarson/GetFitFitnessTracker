@@ -25,12 +25,12 @@ class LogWorkout extends StatelessWidget {
   final Workout workout;
   final Exercise exercise;
 
-  //logs the workout
+  //needs to be changed to be a single page with logging textformfields, no log workout button
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Center(child: Text('Log Workout')), // Centering the title
+          title: Text('Log Workout'), // Centering the title
         ),
         body: Center(
           child: ElevatedButton(
