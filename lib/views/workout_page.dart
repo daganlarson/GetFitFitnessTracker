@@ -1,4 +1,5 @@
 
+import 'package:binarybrigade/views/workout_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -22,12 +23,17 @@ class WorkoutPage extends StatefulWidget {
 class _WorkoutPageState extends State<WorkoutPage> {
   @override
   Widget build(BuildContext context) {
-    return Center(
-        child: LogWorkout(
-            workout: Workout("Now", DateTime.now(), DateTime.now(), null),
-            exercise: Exercise('Running', 10, 100)
-        )
+    return Scaffold(
+      appBar: AppBar(),
+      body: Column(children: [
+        WorkoutWidget(Workout("Today", DateTime.now(), DateTime.now(), null)),
+              LogWorkout(
+                workout: Workout("Now", DateTime.now(), DateTime.now(), null),
+                exercise: Exercise('Running', 10, 100)),
+    ]),
+    
     );
+
   }
 
 }
