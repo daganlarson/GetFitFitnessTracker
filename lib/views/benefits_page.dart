@@ -61,7 +61,7 @@ class CardItem extends StatelessWidget {
             ),
             const SizedBox(height: 14.0),
             IconButton(
-              icon: Image.asset('assets/Fitness Graphic.png'),
+              icon: Image.asset('assets/images/Fitness Graphic.png'),
               iconSize: 50,
               onPressed: () { log('image button pressed'); },
             ),
