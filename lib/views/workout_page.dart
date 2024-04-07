@@ -43,7 +43,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
       appBar: AppBar(
         title: Text('Workout Page'),
       ),
-      body: Center(
+      body: const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

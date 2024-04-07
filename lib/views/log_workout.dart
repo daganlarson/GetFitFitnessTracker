@@ -1,19 +1,17 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:binarybrigade/models/workout.dart';
 import 'package:flutter/services.dart';
 import '../models/firestore.dart';
 
-
-void main() {
-  //this is just for testing the file right now:
-  Workout workout = Workout('2024-03-18', DateTime.now(), DateTime.now(), null);
-  Exercise exercise = Exercise('Running', 10, 100);
-
-  // Run the app with LogWorkout widget
-  runApp(MaterialApp(home: LogWorkout(workout: workout, exercise: exercise)));
-}
+// void main() {
+//   //this is just for testing the file right now:
+//   Workout workout = Workout('2024-03-18', DateTime.now(), DateTime.now(), null);
+//   Exercise exercise = Exercise('Running', 10, 100);
+//
+//   // Run the app with LogWorkout widget
+//   runApp(MaterialApp(home: LogWorkout(workout: workout, exercise: exercise)));
+// }
 //needs to be stateful
 class LogWorkout extends StatelessWidget {
   const LogWorkout({
@@ -26,118 +24,108 @@ class LogWorkout extends StatelessWidget {
   final Exercise exercise;
 
   //needs to be changed to be a single page with logging textformfields, no log workout button
+  //use datetimerange for the date stuff and add calendar picker
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Log Workout'), // Centering the title
+      appBar: AppBar(
+        title: Text('Log Workout'),
+      ),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            //input fields!
+            TextFormField(
+              decoration: const InputDecoration(
+                  labelText: 'Date', icon: Icon(Icons.calendar_month)),
+              initialValue: workout.m_date,
+              keyboardType: TextInputType.datetime,
+              onChanged: (value) {
+                workout.m_date = value;
+              },
+            ),
+            _buildTimePicker(
+              context,
+              workout.m_timeStart,
+              'Time Started',
+              (time) {
+                workout.m_timeStart = time!;
+              },
+            ),
+            _buildTimePicker(
+              context,
+              workout.m_timeEnd,
+              'Time Ended',
+              (time) {
+                workout.m_timeEnd = time!;
+              },
+            ),
+            TextFormField(
+              decoration: const InputDecoration(
+                  labelText: 'Exercise Type', icon: Icon(Icons.directions_run)),
+              initialValue: exercise.m_exerciseType,
+              keyboardType: TextInputType.text,
+              onChanged: (value) {
+                workout.m_listOfExercises.forEach((exercise) {
+                  exercise.m_exerciseType = value;
+                });
+              },
+            ),
+            // TextFormField(
+            //   decoration: InputDecoration(labelText: 'Exercise Description'),
+            //   keyboardType: TextInputType.text,
+            //   onChanged: (value) {
+            //     workout.m_listOfExercises.forEach((exercise) {
+            //       exercise.m_exerciseDescription = value;
+            //     });
+            //   },
+            // ),
+            TextFormField(
+              decoration: const InputDecoration(
+                  labelText: 'Reps', icon: Icon(Icons.numbers)),
+              keyboardType: TextInputType.number,
+              onChanged: (value) {
+                workout.m_listOfExercises.forEach((exercise) {
+                  exercise.m_numberOfReps = int.parse(value);
+                });
+              },
+            ),
+            TextFormField(
+              decoration: const InputDecoration(
+                  labelText: 'Weight used', icon: Icon(Icons.monitor_weight)),
+              keyboardType: TextInputType.number,
+              onChanged: (value) {
+                workout.m_listOfExercises.forEach((exercise) {
+                  exercise.m_weightUsed = int.parse(value);
+                });
+              },
+            ),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    // Save workout
+                    saveWorkout(workout);
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Save'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Cancel'),
+                ),
+              ],
+            ),
+          ],
         ),
-        body: Center(
-          child: ElevatedButton(
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: const Text('Log Workout'),
-                    content: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          //input fields!
-                          TextFormField(
-                            decoration: const InputDecoration(
-                                labelText: 'Date',
-                                icon: Icon(Icons.calendar_month)),
-                            initialValue: workout.m_date,
-                            keyboardType: TextInputType.datetime,
-                            onChanged: (value) {
-                              workout.m_date = value;
-                            },
-                          ),
-                          _buildTimePicker(
-                            context,
-                            workout.m_timeStart,
-                            'Time Started',
-                                (time) {
-                                workout.m_timeStart = time!;
-                                },
-                          ),
-                          _buildTimePicker(
-                            context,
-                            workout.m_timeEnd,
-                            'Time Ended',
-                              (time) {
-                              workout.m_timeEnd = time!;
-                              },
-                          ),
-                          TextFormField(
-                            decoration: const InputDecoration(
-                                labelText: 'Exercise Type',
-                                icon: Icon(Icons.directions_run)),
-                            initialValue: exercise.m_exerciseType,
-                            keyboardType: TextInputType.text,
-                            onChanged: (value) {
-                              workout.m_listOfExercises.forEach((exercise) {
-                                exercise.m_exerciseType = value;
-                              });
-                            },
-                          ),
-                          // TextFormField(
-                          //   decoration: InputDecoration(labelText: 'Exercise Description'),
-                          //   keyboardType: TextInputType.text,
-                          //   onChanged: (value) {
-                          //     workout.m_listOfExercises.forEach((exercise) {
-                          //       exercise.m_exerciseDescription = value;
-                          //     });
-                          //   },
-                          // ),
-                          TextFormField(
-                            decoration: const InputDecoration(
-                                labelText: 'Reps', icon: Icon(Icons.numbers)),
-                            keyboardType: TextInputType.number,
-                            onChanged: (value) {
-                              workout.m_listOfExercises.forEach((exercise) {
-                                exercise.m_numberOfReps = int.parse(value);
-                              });
-                            },
-                          ),
-                          TextFormField(
-                            decoration: const InputDecoration(
-                              labelText: 'Weight used', icon: Icon(Icons.monitor_weight)),
-                            keyboardType: TextInputType.number,
-                            onChanged: (value) {
-                              workout.m_listOfExercises.forEach((exercise) {
-                                exercise.m_weightUsed = int.parse(value);
-                              });
-                            },
-                            )
-                        ],
-                      ),
-                    ),
-                    actions: <Widget>[
-                      TextButton(
-                        onPressed: () {
-                          // Save workout
-                          saveWorkout(workout);
-                          Navigator.of(context).pop();
-                        },
-                        child: const Text('Save'),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: const Text('Cancel'),
-                      )
-                    ],
-                  );
-                },
-              );
-            },
-            child: Text('Log Workout'),
-          ),
-        ));
+      ),
+    );
   }
 
   void saveWorkout(Workout workout) {
@@ -145,7 +133,8 @@ class LogWorkout extends StatelessWidget {
     print('Workout logged: $workout');
   }
 
-  Widget _buildTimePicker(BuildContext context, DateTime initialTime, String label, Function(DateTime?) onChanged) {
+  Widget _buildTimePicker(BuildContext context, DateTime initialTime,
+      String label, Function(DateTime?) onChanged) {
     return GestureDetector(
       onTap: () async {
         final pickedTime = await showTimePicker(
