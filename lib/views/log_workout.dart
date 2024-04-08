@@ -1,7 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:binarybrigade/models/workout.dart';
 import 'package:flutter/services.dart';
+import 'package:googleapis/apigeeregistry/v1.dart';
 import '../models/firestore.dart';
 
 // void main() {
@@ -13,7 +13,7 @@ import '../models/firestore.dart';
 //   runApp(MaterialApp(home: LogWorkout(workout: workout, exercise: exercise)));
 // }
 //needs to be stateful
-class LogWorkout extends StatelessWidget {
+class LogWorkout extends StatefulWidget {
   const LogWorkout({
     Key? key,
     required this.workout,
@@ -22,6 +22,22 @@ class LogWorkout extends StatelessWidget {
 
   final Workout workout;
   final Exercise exercise;
+
+  @override
+  _LogWorkoutState createState() => _LogWorkoutState();
+}
+
+class _LogWorkoutState extends State<LogWorkout> {
+  late TimeOfDay _startTime;
+  late TimeOfDay _endTime;
+  late int _duration = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _startTime = TimeOfDay.now();
+    _endTime = TimeOfDay.now();
+  }
 
   //needs to be changed to be a single page with logging textformfields, no log workout button
   //use datetimerange for the date stuff and add calendar picker
@@ -37,57 +53,72 @@ class LogWorkout extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             //input fields!
-            TextFormField(
-              decoration: const InputDecoration(
-                  labelText: 'Date', icon: Icon(Icons.calendar_month)),
-              initialValue: workout.m_date,
-              keyboardType: TextInputType.datetime,
-              onChanged: (value) {
-                workout.m_date = value;
+
+            //Date Picker
+            ElevatedButton(
+              onPressed: () => _selectDate(context),
+              child: Text('Select Date'),
+            ),
+            SizedBox(height: 16),
+            Text(
+              'Selected Date: ${widget.workout.m_date}',
+              style: TextStyle(fontSize: 16),
+            ),
+            SizedBox(height: 16),
+
+            //Time Picker
+            _buildTimePicker(
+              'Start Time',
+              _startTime,
+              (time) {
+                setState(() {
+                  _startTime = time!;
+                });
               },
             ),
             _buildTimePicker(
-              context,
-              workout.m_timeStart,
-              'Time Started',
+              'End Time',
+              _endTime,
               (time) {
-                workout.m_timeStart = time!;
+                setState(() {
+                  _endTime = time!;
+                  _calculateDuration();
+                });
               },
             ),
-            _buildTimePicker(
-              context,
-              workout.m_timeEnd,
-              'Time Ended',
-              (time) {
-                workout.m_timeEnd = time!;
-              },
-            ),
+            SizedBox(height: 16),
+
+            //workout duration
+            Text('Workout Duration: $_duration minutes'),
+            SizedBox(height: 16),
+
+            //other text form fields
             TextFormField(
               decoration: const InputDecoration(
                   labelText: 'Exercise Type', icon: Icon(Icons.directions_run)),
-              initialValue: exercise.m_exerciseType,
               keyboardType: TextInputType.text,
               onChanged: (value) {
-                workout.m_listOfExercises.forEach((exercise) {
+                widget.workout.m_listOfExercises.forEach((exercise) {
                   exercise.m_exerciseType = value;
                 });
               },
             ),
-            // TextFormField(
-            //   decoration: InputDecoration(labelText: 'Exercise Description'),
-            //   keyboardType: TextInputType.text,
-            //   onChanged: (value) {
-            //     workout.m_listOfExercises.forEach((exercise) {
-            //       exercise.m_exerciseDescription = value;
-            //     });
-            //   },
-            // ),
+            TextFormField(
+              decoration: const InputDecoration(
+                  labelText: 'Exercise Description',
+                  icon: Icon(Icons.description)),
+              keyboardType: TextInputType.text,
+              onChanged: (value) {
+                widget.workout.m_listOfExercises.forEach((exercise) {
+                  // exercise.m_exerciseDescription = value;
+                });
+              },
+            ),
             TextFormField(
               decoration: const InputDecoration(
                   labelText: 'Reps', icon: Icon(Icons.numbers)),
-              keyboardType: TextInputType.number,
               onChanged: (value) {
-                workout.m_listOfExercises.forEach((exercise) {
+                widget.workout.m_listOfExercises.forEach((exercise) {
                   exercise.m_numberOfReps = int.parse(value);
                 });
               },
@@ -97,7 +128,7 @@ class LogWorkout extends StatelessWidget {
                   labelText: 'Weight used', icon: Icon(Icons.monitor_weight)),
               keyboardType: TextInputType.number,
               onChanged: (value) {
-                workout.m_listOfExercises.forEach((exercise) {
+                widget.workout.m_listOfExercises.forEach((exercise) {
                   exercise.m_weightUsed = int.parse(value);
                 });
               },
@@ -108,8 +139,29 @@ class LogWorkout extends StatelessWidget {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    // Save workout
-                    saveWorkout(workout);
+                    //converts
+                    DateTime startTime = DateTime(
+                      DateTime.now().year,
+                      DateTime.now().month,
+                      DateTime.now().day,
+                      _startTime.hour,
+                      _startTime.minute,
+                    );
+                    DateTime endTime = DateTime(
+                      DateTime.now().year,
+                      DateTime.now().month,
+                      DateTime.now().day,
+                      _endTime.hour,
+                      _endTime.minute,
+                    );
+
+
+                    //save workout
+                    widget.workout.m_timeStart = startTime;
+                    widget.workout.m_timeEnd = endTime;
+                    saveWorkout(widget.workout);
+
+                    //close page
                     Navigator.of(context).pop();
                   },
                   child: const Text('Save'),
@@ -133,38 +185,54 @@ class LogWorkout extends StatelessWidget {
     print('Workout logged: $workout');
   }
 
-  Widget _buildTimePicker(BuildContext context, DateTime initialTime,
-      String label, Function(DateTime?) onChanged) {
+  Widget _buildTimePicker(
+      String label, TimeOfDay initialTime, Function(TimeOfDay?) onChanged) {
     return GestureDetector(
       onTap: () async {
         final pickedTime = await showTimePicker(
           context: context,
-          initialTime: TimeOfDay.fromDateTime(initialTime),
+          initialTime: initialTime,
         );
         if (pickedTime != null) {
-          onChanged(DateTime(
-            0,
-            0,
-            0,
-            pickedTime.hour,
-            pickedTime.minute,
-          ));
+          onChanged(pickedTime);
         }
       },
       child: AbsorbPointer(
         child: TextFormField(
           decoration: InputDecoration(
             labelText: label,
-            icon: Icon(Icons.watch_later),
+            icon: Icon(Icons.watch_later_outlined),
           ),
           controller: TextEditingController(
-            text: initialTime != null
-                ? TimeOfDay.fromDateTime(initialTime).format(context)
-                : '',
+            text: initialTime.format(context),
           ),
           keyboardType: TextInputType.datetime,
         ),
       ),
     );
+  }
+
+  //calendar picker
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+    );
+    if (pickedDate != null) {
+      setState(() {
+        widget.workout.m_date = pickedDate.toString();
+      });
+    }
+  }
+
+  //calculates the duration of workout
+  void _calculateDuration() {
+    final int startMinutes = _startTime.hour * 60 + _startTime.minute;
+    final int endMinutes = _endTime.hour * 60 + _endTime.minute;
+    setState(() {
+      _duration = (endMinutes - startMinutes).abs();
+    });
   }
 }

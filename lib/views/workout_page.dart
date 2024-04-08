@@ -1,5 +1,4 @@
 
-import 'package:binarybrigade/views/workout_history_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:binarybrigade/models/firestore.dart';
@@ -58,14 +57,15 @@ class _WorkoutPageState extends State<WorkoutPage> {
             MaterialPageRoute(builder: (context) => LogWorkout(
               workout: Workout("Now", DateTime.now(), DateTime.now(), null),
               exercise: Exercise('Running', 10, 100),
-            )),
-          );
-          setState(() {
-            index = (index + 1) % customizations.length;
+            ),),
+          ).then((_) {
+            setState(() {
+              index = (index + 1) % customizations.length;
+            });
           });
         },
         foregroundColor: customizations[index].$1,
-          backgroundColor: customizations[index].$2,
+        backgroundColor: customizations[index].$2,
         shape: customizations[index].$3,
         child: const Icon(Icons.add),
       ),
