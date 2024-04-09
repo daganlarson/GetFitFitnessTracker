@@ -89,7 +89,9 @@ class _LogWorkoutState extends State<LogWorkout> {
             SizedBox(height: 16),
 
             //workout duration
-            Text('Workout Duration: $_duration minutes'),
+            Text('Workout Duration: $_duration minutes',
+                  style: TextStyle(fontSize: 16),),
+
             SizedBox(height: 16),
 
             //other text form fields
