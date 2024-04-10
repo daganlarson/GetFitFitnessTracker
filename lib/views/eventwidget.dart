@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:binarybrigade/models/event.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:binarybrigade/models/firestore.dart';
 
 class EventWidget extends StatelessWidget {
   Event thisEvent;
@@ -13,17 +14,23 @@ class EventWidget extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 220,
+        height: 250,
         width: 350,
         padding: EdgeInsets.all(12),
         decoration: BoxDecoration(
             color: Colors.blue, borderRadius: BorderRadius.all(Radius.circular(8))),
-        child: Column(
-          children: [
+        child: Flexible(
+          child: Column(
+            children: [
+            Align(
+              alignment: Alignment.topLeft,
+            child:ElevatedButton.icon(onPressed: onSave, style: ElevatedButton.styleFrom(shape: StarBorder(), alignment: Alignment.bottomLeft), icon: Icon(null), label: Text(""))
+            ),
             Text(thisEvent.name),
             Image.network(thisEvent.thumbnail),
-          Text(thisEvent.address + "\n" + thisEvent.dates, textAlign: TextAlign.center)
+          Text(thisEvent.address + "\n" + thisEvent.dates.month.toString() + "/" + thisEvent.dates.day.toString() + "/"+thisEvent.dates.year.toString()+" " + thisEvent.dateSpan, textAlign: TextAlign.center)
           ],
+          )
         )
       ),
     );
@@ -35,6 +42,11 @@ class EventWidget extends StatelessWidget {
     throw Exception('Could not launch $eventLink');
     }
   }
+  void onSave(){
+    Database.saveEvent(thisEvent);
+  }
 }
+
+
 
 
