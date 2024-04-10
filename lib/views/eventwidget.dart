@@ -28,7 +28,7 @@ class EventWidget extends StatelessWidget {
             ),
             Text(thisEvent.name),
             Image.network(thisEvent.thumbnail),
-          Text(thisEvent.address + "\n" + thisEvent.dates.toString(), textAlign: TextAlign.center)
+          Text(thisEvent.address + "\n" + thisEvent.dates.month.toString() + "/" + thisEvent.dates.day.toString() + "/"+thisEvent.dates.year.toString()+" " + thisEvent.dateSpan, textAlign: TextAlign.center)
           ],
           )
         )
