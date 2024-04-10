@@ -1,3 +1,4 @@
+import 'package:binarybrigade/views/eventwidget.dart';
 import 'package:binarybrigade/views/root_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -101,6 +102,7 @@ class _MyAppState extends State<MyApp> {
         });
   }
 }
+
 
 
 
