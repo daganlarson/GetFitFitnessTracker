@@ -13,6 +13,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'firebase_options.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:binarybrigade/views/notifications.dart';
 
 var results;
 String curCity ="";
@@ -28,7 +30,7 @@ void main() async {
     Permission.locationWhenInUse.request();
   }
 
-  var position = await Geolocator.getCurrentPosition(
+    var position = await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.best).timeout(Duration(seconds: 5));
   try {
     List<Placemark> placemarks = await placemarkFromCoordinates(
@@ -59,8 +61,20 @@ Future<List> searchEvents() async{
   return theResults["events_results"];
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    // Initialise  localnotification
+    Notifications.initialize();
+  }
 
   // This widget is the root of your application.
   @override
