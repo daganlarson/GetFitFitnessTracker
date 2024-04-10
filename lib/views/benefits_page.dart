@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class BenefitsPage extends StatefulWidget {
@@ -68,7 +67,6 @@ class CardItem extends StatelessWidget {
                   SizedBox(width: 8.0),
                   Text("Like"),
                 ]
-
               )
             ]),
             const SizedBox(height: 12.0),
