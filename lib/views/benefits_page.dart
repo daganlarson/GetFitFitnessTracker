@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class BenefitsPage extends StatefulWidget {
   const BenefitsPage({super.key});
@@ -53,7 +55,7 @@ class CardItem extends StatelessWidget {
               child: Container(
                 child: IconButton(
                   icon: Image.asset('assets/images/FitnessGraphic.png'),
-                  onPressed: () { log('image button pressed'); },
+                  onPressed: () => launchUrlString('https://www.betterup.com/blog/exercise-benefits'),
                 ),
               )
             ),
