@@ -54,7 +54,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
           //CHART stuff
           Container(
             height: 300,
-            child: SfCartesianChart(
+            child: const SfCartesianChart(
 
             ),
           ),
@@ -72,7 +72,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
                       itemBuilder: (context, index) {
                         final workoutData =
                             snapshot.data!.docs[index].data(); //getting errors
-                        final workout = workoutData['workout'];
+                        //final workout = workoutData['workout'];
                         return Stack(children: <Widget>[
                           Container(
                               width: MediaQuery.of(context).size.width,

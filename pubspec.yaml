@@ -46,6 +46,7 @@ dependencies:
   firebase_auth: ^4.17.8
   provider: ^6.1.2
   shared_preferences: ^2.2.2
+  syncfusion_flutter_charts: ^25.1.40
 
 
 dev_dependencies:
