@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:googleapis/apigeeregistry/v1.dart';
 import '../models/firestore.dart';
 
+//sync fusion data charts
+
 // void main() {
 //   //this is just for testing the file right now:
 //   Workout workout = Workout('2024-03-18', DateTime.now(), DateTime.now(), null);
