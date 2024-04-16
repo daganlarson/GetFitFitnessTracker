@@ -1,7 +1,6 @@
 import 'package:binarybrigade/views/eventwidget.dart';
 import 'package:binarybrigade/views/root_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
 import 'views/home_page.dart';
 import 'views/login_page.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -20,7 +19,6 @@ var results;
 String curCity ="";
 String curState="";
 List<Event> eventList = <Event>[];
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -50,7 +48,6 @@ void main() async {
 
   runApp(MyApp());
 }
-
 
 Future<List> searchEvents() async{
   var query = "Exercise Events near $curCity, $curState";
@@ -102,7 +99,3 @@ class _MyAppState extends State<MyApp> {
         });
   }
 }
-
-
-
-
