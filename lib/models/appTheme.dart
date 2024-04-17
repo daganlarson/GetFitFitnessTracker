@@ -8,7 +8,9 @@ class AppTheme {
   const AppTheme._();
   static ThemeData define() {
     return ThemeData(
-      fontFamily: ""
-    )
+      fontFamily: "Satoshi",
+      primaryColor: Color(0xffd5ff5f),
+
+    );
   }
 }
