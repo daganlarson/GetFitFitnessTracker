@@ -41,7 +41,6 @@ class _LogWorkoutState extends State<LogWorkout> {
     _endTime = TimeOfDay.now();
   }
 
-  //needs to be changed to be a single page with logging textformfields, no log workout button
   //use datetimerange for the date stuff and add calendar picker
   @override
   Widget build(BuildContext context) {
