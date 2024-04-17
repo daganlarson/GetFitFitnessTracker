@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
+import '../models/appTheme.dart';
+
 class BenefitsPage extends StatefulWidget {
   const BenefitsPage({super.key});
 
@@ -16,7 +18,7 @@ class _BenefitsPageState extends State<BenefitsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xff3b5998),
+        backgroundColor: AppTheme.colors.outerSpace,
         title: Text("Benefits"),
       ),
       body: ListView.builder(

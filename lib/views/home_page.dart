@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../distancetracker.dart';
+import '../models/appTheme.dart';
 import 'benefits_page.dart';
 import 'distance_page.dart';
 import 'eventwidget.dart';
@@ -18,6 +19,7 @@ class HomePage extends StatefulWidget {
           title: Text('Home'),
         ),
         body: Center(child: Text('Home Page')),
+
       );
 
 
