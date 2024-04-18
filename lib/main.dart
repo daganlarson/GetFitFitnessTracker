@@ -1,3 +1,4 @@
+import 'package:binarybrigade/models/appTheme.dart';
 import 'package:binarybrigade/views/components/eventwidget.dart';
 import 'package:binarybrigade/views/root_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -87,16 +88,7 @@ class _MyAppState extends State<MyApp> {
           if (snapshot.connectionState == ConnectionState.done) {
             return MaterialApp(
               title: 'Binary Brigade',
-              theme: ThemeData(
-                colorScheme: ColorScheme.fromSeed(
-                  seedColor: AppColors.paleLime,
-                  primary: AppColors.paleLime,
-                  tertiary: AppColors.pinkAccent,
-                  background: AppColors.outerSpace,
-                  
-                ),
-                useMaterial3: true,
-              ),
+              theme: appTheme, //see appTheme.dart
               home: RootPage(),
             );
           } else {
