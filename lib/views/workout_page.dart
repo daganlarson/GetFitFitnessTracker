@@ -55,6 +55,17 @@ class _WorkoutPageState extends State<WorkoutPage> {
           Container(
             height: 300,
             child: const SfCartesianChart(
+              //chart stuff
+              //minutes exercised over last 7 (week) days column chart
+              primaryXAxis: CategoryAxis(),
+              title: ChartTitle(text: 'Minutes Exercised Weekly'),
+              legend: Legend(isVisible: true),
+
+              series: [
+
+              ],
+
+
 
             ),
           ),
@@ -81,7 +92,6 @@ class _WorkoutPageState extends State<WorkoutPage> {
                                   padding:
                                       EdgeInsets.only(top: 8.0, bottom: 8.0),
                                   child: Material(
-                                      color: Colors.white,
                                       elevation: 14.0,
                                       child: Center(
                                           child: Padding(
@@ -95,12 +105,12 @@ class _WorkoutPageState extends State<WorkoutPage> {
           const SizedBox(
             height: 20,
           ),
-          ElevatedButton(
-            onPressed: () {
-              // Add functionality for the button
-            },
-            child: Text('Another Child Widget'),
-          ),
+          // ElevatedButton(
+          //   onPressed: () {
+          //     // Add functionality for the button
+          //   },
+          //   child: Text('Another Child Widget'),
+          // ),
         ],
       ),
       floatingActionButton: FloatingActionButton(

@@ -4,17 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:googleapis/apigeeregistry/v1.dart';
 import '../models/firestore.dart';
 
-//sync fusion data charts
 
-// void main() {
-//   //this is just for testing the file right now:
-//   Workout workout = Workout('2024-03-18', DateTime.now(), DateTime.now(), null);
-//   Exercise exercise = Exercise('Running', 10, 100);
-//
-//   // Run the app with LogWorkout widget
-//   runApp(MaterialApp(home: LogWorkout(workout: workout, exercise: exercise)));
-// }
-//needs to be stateful
 class LogWorkout extends StatefulWidget {
   const LogWorkout({
     Key? key,
@@ -57,6 +47,7 @@ class _LogWorkoutState extends State<LogWorkout> {
 
             //Date Picker
             ElevatedButton(
+
               onPressed: () => _selectDate(context),
               child: Text('Select Date'),
             ),

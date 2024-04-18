@@ -49,10 +49,12 @@ class Exercise {
   late String m_exerciseType;
   late int m_numberOfReps;
   late int m_weightUsed;
+  late String m_exerciseDescription;
 
-  Exercise(String exerciseType, int numOfReps, int weight) {
+  Exercise(String exerciseType, int numOfReps, int weight, String exerciseDesc) {
     m_exerciseType = exerciseType;
     m_numberOfReps = numOfReps;
     m_weightUsed = weight;
+    m_exerciseDescription = exerciseDesc;
   }
 }
