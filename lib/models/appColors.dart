@@ -10,3 +10,4 @@ class AppColors{
   static const outerSpace = Color(0xff2d2d36);
   static const pinkAccent = Color(0xffff0dff);
 }
+

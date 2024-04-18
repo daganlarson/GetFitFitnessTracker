@@ -4,15 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:googleapis/apigeeregistry/v1.dart';
 import '../../models/firestore.dart';
 
-// void main() {
-//   //this is just for testing the file right now:
-//   Workout workout = Workout('2024-03-18', DateTime.now(), DateTime.now(), null);
-//   Exercise exercise = Exercise('Running', 10, 100);
-//
-//   // Run the app with LogWorkout widget
-//   runApp(MaterialApp(home: LogWorkout(workout: workout, exercise: exercise)));
-// }
-//needs to be stateful
+
 class LogWorkout extends StatefulWidget {
   const LogWorkout({
     Key? key,
@@ -39,7 +31,6 @@ class _LogWorkoutState extends State<LogWorkout> {
     _endTime = TimeOfDay.now();
   }
 
-  //needs to be changed to be a single page with logging textformfields, no log workout button
   //use datetimerange for the date stuff and add calendar picker
   @override
   Widget build(BuildContext context) {
@@ -56,6 +47,7 @@ class _LogWorkoutState extends State<LogWorkout> {
 
             //Date Picker
             ElevatedButton(
+
               onPressed: () => _selectDate(context),
               child: Text('Select Date'),
             ),
