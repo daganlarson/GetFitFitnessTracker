@@ -34,7 +34,7 @@ class Workout {
       'date': m_date,
       'startTime': m_timeStart,
       'endTime': m_timeEnd,
-      if (m_listOfExercises != null) 'exercises': m_listOfExercises,
+      if (m_listOfExercises != null) 'exercises': m_listOfExercises.map((exercise) => exercise.toFirestore()).toList(),
     };
   }
 
