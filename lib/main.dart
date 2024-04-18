@@ -1,6 +1,7 @@
 import 'package:binarybrigade/views/eventwidget.dart';
 import 'package:binarybrigade/views/root_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'models/appColors.dart';
 import 'views/home_page.dart';
 import 'views/login_page.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -87,7 +88,11 @@ class _MyAppState extends State<MyApp> {
             return MaterialApp(
               title: 'Binary Brigade',
               theme: ThemeData(
-                colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+                colorScheme: ColorScheme.fromSeed(
+                  seedColor: AppColors.paleLime,
+                  background: AppColors.outerSpace,
+                  
+                ),
                 useMaterial3: true,
               ),
               home: RootPage(),

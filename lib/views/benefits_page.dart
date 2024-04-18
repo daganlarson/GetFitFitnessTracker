@@ -18,7 +18,7 @@ class _BenefitsPageState extends State<BenefitsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppTheme.colors.outerSpace,
+        backgroundColor: AppTheme.define().primaryColor,
         title: Text("Benefits"),
       ),
       body: ListView.builder(
