@@ -57,4 +57,18 @@ class Exercise {
     m_weightUsed = weight;
     m_exerciseDescription = exerciseDesc;
   }
+
+  Map<String, dynamic> toFirestore() {
+    return {
+      'exerciseType': m_exerciseType,
+      'reps': m_numberOfReps,
+      'weight': m_weightUsed,
+      'description': m_exerciseDescription,
+    };
+  }
+
+  factory Exercise.fromFirestore(DocumentSnapshot<Map<String, dynamic>> snapshot, SnapshotOptions? options,) {
+    final data = snapshot.data();
+    return Exercise(data?['exerciseType'], data?['reps'], data?['weight'], data?['description']);
+  }
 }

@@ -120,7 +120,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
             MaterialPageRoute(
               builder: (context) => LogWorkout(
                 workout: Workout("Now", DateTime.now(), DateTime.now(), null),
-                exercise: Exercise('Running', 10, 100),
+                exercise: Exercise('Running', 10, 100, "I ran"),
               ),
             ),
           ).then((_) {
