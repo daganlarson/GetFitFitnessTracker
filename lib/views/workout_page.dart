@@ -30,6 +30,7 @@ class WorkoutPage extends StatefulWidget {
 
 class _WorkoutPageState extends State<WorkoutPage> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  //late List<_ChartData>
 
   //Floating add button that adds a workout
   // The FAB's foregroundColor, backgroundColor, and shape
@@ -61,7 +62,11 @@ class _WorkoutPageState extends State<WorkoutPage> {
               title: ChartTitle(text: 'Minutes Exercised Weekly'),
               legend: Legend(isVisible: true),
 
-              series: [
+              series: <CartesianSeries>[
+                // ColumnSeries<>(
+                //   dataSource: data,
+                //   xValueMapper: ,
+                // )
 
               ],
 
@@ -120,7 +125,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
             MaterialPageRoute(
               builder: (context) => LogWorkout(
                 workout: Workout("Now", DateTime.now(), DateTime.now(), null),
-                exercise: Exercise('Running', 10, 100, "I ran"),
+                exercise: Exercise('Running', 10, 100, 'No Description'),
               ),
             ),
           ).then((_) {

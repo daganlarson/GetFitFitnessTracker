@@ -104,7 +104,7 @@ class _LogWorkoutState extends State<LogWorkout> {
               keyboardType: TextInputType.text,
               onChanged: (value) {
                 widget.workout.m_listOfExercises.forEach((exercise) {
-                  // exercise.m_exerciseDescription = value;
+                  exercise.m_exerciseDescription = value;
                 });
               },
             ),
