@@ -4,8 +4,9 @@ import '../distancetracker.dart';
 import '../models/appTheme.dart';
 import 'benefits_page.dart';
 import 'distance_page.dart';
-import 'eventwidget.dart';
+import 'components/eventwidget.dart';
 import '../main.dart';
+import 'event_page.dart';
 import 'settings_page.dart';
 import 'workout_page.dart';
 
@@ -33,21 +34,11 @@ class _HomePageState extends State<HomePage> {
   int pageIndex = 0;
 
   final screens = [
-    Center(child:
-    Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        EventWidget(eventList[2]),
-        SizedBox(height:15),
-        EventWidget(eventList[1]),
-        SizedBox(height:15),
-        EventWidget(eventList[0]),
-      ],
-    )),
+    const EventPage(),
     const SettingsPage(),
     const WorkoutPage(),
-    const Center(child: Text('calendar')),
-    BenefitsPage(),
+    DistancePage(),
+    const BenefitsPage(),
   ];
 
   @override

@@ -5,7 +5,7 @@ import 'package:binarybrigade/models/event.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:binarybrigade/models/firestore.dart';
 
-import '../models/appColors.dart';
+import '../../models/appColors.dart';
 
 class EventWidget extends StatelessWidget {
   Event thisEvent;

@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
+import '../models/appColors.dart';
 import '../models/appTheme.dart';
 
 class BenefitsPage extends StatefulWidget {
@@ -18,12 +19,12 @@ class _BenefitsPageState extends State<BenefitsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppTheme.define().primaryColor,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         title: Text("Benefits"),
       ),
       body: ListView.builder(
         itemCount: 12,
-        itemBuilder: (context, index) =>CardItem(),
+        itemBuilder: (context, index) => CardItem(),
       ),
       /*floatingActionButton: FloatingActionButton(
         onPressed: () {},
@@ -44,10 +45,10 @@ class CardItem extends StatelessWidget {
     return Card(
       child: Container(
         height: 350.0,
-        color: Colors.blue,
+        color: Theme.of(context).colorScheme.primaryContainer,
         child: Column(
           children: <Widget>[
-            const ListTile(
+            ListTile(
               leading: CircleAvatar(),
               title: Text("Benefits test"),
               subtitle: Text("subtitle test"),

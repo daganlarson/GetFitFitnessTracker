@@ -6,9 +6,9 @@ import '../providers/LoginProvider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 
-import 'notifier.dart';
+import 'components/notifier.dart';
 
-import 'youtube_player.dart';
+import 'components/youtube_player.dart';
 
 
 

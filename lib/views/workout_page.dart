@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:binarybrigade/models/firestore.dart';
 
 import '../models/workout.dart';
-import 'log_workout.dart';
+import 'components/log_workout.dart';
 
 //this will now be the history page with a floating log workout button!
 

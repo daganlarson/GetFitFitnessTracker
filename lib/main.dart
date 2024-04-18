@@ -1,4 +1,4 @@
-import 'package:binarybrigade/views/eventwidget.dart';
+import 'package:binarybrigade/views/components/eventwidget.dart';
 import 'package:binarybrigade/views/root_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'models/appColors.dart';
@@ -14,7 +14,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'firebase_options.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:binarybrigade/views/notifications.dart';
+import 'package:binarybrigade/views/components/notifications.dart';
 
 var results;
 String curCity ="";
@@ -90,6 +90,8 @@ class _MyAppState extends State<MyApp> {
               theme: ThemeData(
                 colorScheme: ColorScheme.fromSeed(
                   seedColor: AppColors.paleLime,
+                  primary: AppColors.paleLime,
+                  tertiary: AppColors.pinkAccent,
                   background: AppColors.outerSpace,
                   
                 ),
