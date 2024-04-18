@@ -20,7 +20,7 @@ class EventWidget extends StatelessWidget {
         width: 350,
         padding: EdgeInsets.all(12),
         decoration: BoxDecoration(
-            color: AppColors.paleLime, borderRadius: BorderRadius.all(Radius.circular(8))),
+            color: Theme.of(context).colorScheme.onPrimary, borderRadius: BorderRadius.all(Radius.circular(8))),
         child: Flexible(
           child: Column(
             children: [

@@ -23,8 +23,9 @@ class _DistancePageState extends State<DistancePage> {
             child: const Text('Track Distance'),
             onPressed: () {
               myTracker.m_locationToggle = !myTracker.m_locationToggle;
-              if (myTracker.m_locationToggle)
+              if (myTracker.m_locationToggle) {
                 myTracker.trackDistanceTraveled();
+              }
             },
           ),
         )
