@@ -53,6 +53,7 @@ class _HomePageState extends State<HomePage> {
         NavigationBar(
           onDestinationSelected: (pageIndex) =>
               setState(() => this.pageIndex = pageIndex),
+          selectedIndex: pageIndex,
           destinations: const [
             NavigationDestination(
                 icon: Icon(Icons.home),
