@@ -34,11 +34,10 @@ class _HomePageState extends State<HomePage> {
   int pageIndex = 0;
 
   final screens = [
-    const EventPage(),
-    const SettingsPage(),
     const WorkoutPage(),
     DistancePage(),
     const BenefitsPage(),
+    const SettingsPage()
   ];
 
   @override
@@ -61,21 +60,17 @@ class _HomePageState extends State<HomePage> {
                 label: 'Workout'
             ),
             NavigationDestination(
-                icon: Icon(Icons.settings),
-                label: 'Settings'
-            ),
-            NavigationDestination(
-                icon: Icon(Icons.person),
-                label: 'Person'
-            ),
-            NavigationDestination(
                 icon: Icon(Icons.calendar_month),
                 label: 'Events'
             ),
             NavigationDestination(
                 icon: Icon(Icons.explore),
                 label: 'Benefits'
-            )
+            ),
+            NavigationDestination(
+                icon: Icon(Icons.settings),
+                label: 'Settings'
+            ),
           ],
         )
     );
