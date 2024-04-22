@@ -15,16 +15,10 @@ class _EventPageState extends State<EventPage> {
   @override
   Widget build(BuildContext context) {
     return Center(child:
-    Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        EventWidget(eventList[2]),
-        SizedBox(height:15),
-        EventWidget(eventList[1]),
-        SizedBox(height:15),
-        EventWidget(eventList[0]),
-      ],
-    ));
+    ListView(
+      children: List.generate(3, (index) => EventWidget(eventList[index])),
+    )
+    );
   }
 
 }

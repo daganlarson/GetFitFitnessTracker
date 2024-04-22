@@ -49,6 +49,7 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
         body: screens[pageIndex],
+
         bottomNavigationBar:
         NavigationBar(
           onDestinationSelected: (pageIndex) =>
@@ -57,7 +58,7 @@ class _HomePageState extends State<HomePage> {
           destinations: const [
             NavigationDestination(
                 icon: Icon(Icons.home),
-                label: 'Home'
+                label: 'Workout'
             ),
             NavigationDestination(
                 icon: Icon(Icons.settings),
@@ -69,11 +70,11 @@ class _HomePageState extends State<HomePage> {
             ),
             NavigationDestination(
                 icon: Icon(Icons.calendar_month),
-                label: 'Calendar'
+                label: 'Events'
             ),
             NavigationDestination(
                 icon: Icon(Icons.explore),
-                label: 'Distance'
+                label: 'Benefits'
             )
           ],
         )

@@ -10,9 +10,12 @@ void saveWorkout() {
 }
 
 void getWorkouts() async {
+  print("get workouts called");
   DateTime now = DateTime.now();
   final List<Workout> workouts = await Database.getWorkouts(
       DateTimeRange(start: now.subtract(const Duration(days: 300)), end: now));
+  print("workouts recieved");
+  print(workouts);
   Workout workout;
   for (workout in workouts) {
     print(workout.toString());

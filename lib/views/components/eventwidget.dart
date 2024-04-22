@@ -16,9 +16,9 @@ class EventWidget extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 250,
         width: 350,
         padding: EdgeInsets.all(12),
+        margin: EdgeInsets.all(15),
         decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.onPrimary, borderRadius: BorderRadius.all(Radius.circular(8))),
         child: Flexible(
