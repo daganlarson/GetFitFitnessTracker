@@ -5,6 +5,8 @@ import 'package:binarybrigade/models/event.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:binarybrigade/models/firestore.dart';
 
+import '../../models/appColors.dart';
+
 class EventWidget extends StatelessWidget {
   Event thisEvent;
   EventWidget(Event myEvent, {super.key}) : thisEvent = myEvent;
@@ -18,7 +20,7 @@ class EventWidget extends StatelessWidget {
         width: 350,
         padding: EdgeInsets.all(12),
         decoration: BoxDecoration(
-            color: Colors.blue, borderRadius: BorderRadius.all(Radius.circular(8))),
+            color: Theme.of(context).colorScheme.onPrimary, borderRadius: BorderRadius.all(Radius.circular(8))),
         child: Flexible(
           child: Column(
             children: [

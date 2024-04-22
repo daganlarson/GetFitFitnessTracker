@@ -81,9 +81,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       ),
                   ),
-                  user.status == Status.Authenticating
-                  ? const Center(child: CircularProgressIndicator())
-                      : Padding(
+                  Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Material(
                   elevation: 5.0,

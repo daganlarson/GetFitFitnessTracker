@@ -1,8 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../distancetracker.dart';
-import 'eventwidget.dart';
+import '../models/appTheme.dart';
+import 'benefits_page.dart';
+import 'distance_page.dart';
+import 'components/eventwidget.dart';
 import '../main.dart';
+import 'event_page.dart';
 import 'settings_page.dart';
 import 'workout_page.dart';
 
@@ -16,6 +20,7 @@ class HomePage extends StatefulWidget {
           title: Text('Home'),
         ),
         body: Center(child: Text('Home Page')),
+
       );
 
 
@@ -29,21 +34,11 @@ class _HomePageState extends State<HomePage> {
   int pageIndex = 0;
 
   final screens = [
-    Center(child:
-    Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        EventWidget(eventList[2]),
-        SizedBox(height:15),
-        EventWidget(eventList[1]),
-        SizedBox(height:15),
-        EventWidget(eventList[0]),
-      ],
-    )),
+    const EventPage(),
     const SettingsPage(),
     const WorkoutPage(),
-    const Center(child: Text('calendar')),
-    const Center(child: Text('explore')),
+    DistancePage(),
+    const BenefitsPage(),
   ];
 
   @override
@@ -58,6 +53,7 @@ class _HomePageState extends State<HomePage> {
         NavigationBar(
           onDestinationSelected: (pageIndex) =>
               setState(() => this.pageIndex = pageIndex),
+          selectedIndex: pageIndex,
           destinations: const [
             NavigationDestination(
                 icon: Icon(Icons.home),
@@ -77,7 +73,7 @@ class _HomePageState extends State<HomePage> {
             ),
             NavigationDestination(
                 icon: Icon(Icons.explore),
-                label: 'Explore'
+                label: 'Distance'
             )
           ],
         )

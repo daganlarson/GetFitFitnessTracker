@@ -34,7 +34,7 @@ class Workout {
       'date': m_date,
       'startTime': m_timeStart,
       'endTime': m_timeEnd,
-      if (m_listOfExercises != null) 'exercises': m_listOfExercises,
+      if (m_listOfExercises != null) 'exercises': m_listOfExercises.map((exercise) => exercise.toFirestore()).toList(),
     };
   }
 
@@ -49,10 +49,26 @@ class Exercise {
   late String m_exerciseType;
   late int m_numberOfReps;
   late int m_weightUsed;
+  late String m_exerciseDescription;
 
-  Exercise(String exerciseType, int numOfReps, int weight) {
+  Exercise(String exerciseType, int numOfReps, int weight, String exerciseDesc) {
     m_exerciseType = exerciseType;
     m_numberOfReps = numOfReps;
     m_weightUsed = weight;
+    m_exerciseDescription = exerciseDesc;
+  }
+
+  Map<String, dynamic> toFirestore() {
+    return {
+      'exerciseType': m_exerciseType,
+      'reps': m_numberOfReps,
+      'weight': m_weightUsed,
+      'description': m_exerciseDescription,
+    };
+  }
+
+  factory Exercise.fromFirestore(DocumentSnapshot<Map<String, dynamic>> snapshot, SnapshotOptions? options,) {
+    final data = snapshot.data();
+    return Exercise(data?['exerciseType'], data?['reps'], data?['weight'], data?['description']);
   }
 }

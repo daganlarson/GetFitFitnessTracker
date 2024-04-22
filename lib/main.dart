@@ -1,6 +1,8 @@
+import 'package:binarybrigade/models/appTheme.dart';
+import 'package:binarybrigade/views/components/eventwidget.dart';
 import 'package:binarybrigade/views/root_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
+import 'models/appColors.dart';
 import 'views/home_page.dart';
 import 'views/login_page.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -13,13 +15,12 @@ import 'package:geocoding/geocoding.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'firebase_options.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:binarybrigade/views/notifications.dart';
+import 'package:binarybrigade/views/components/notifications.dart';
 
 var results;
 String curCity ="";
 String curState="";
 List<Event> eventList = <Event>[];
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -49,7 +50,6 @@ void main() async {
 
   runApp(MyApp());
 }
-
 
 Future<List> searchEvents() async{
   var query = "Exercise Events near $curCity, $curState";
@@ -88,10 +88,7 @@ class _MyAppState extends State<MyApp> {
           if (snapshot.connectionState == ConnectionState.done) {
             return MaterialApp(
               title: 'Binary Brigade',
-              theme: ThemeData(
-                colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-                useMaterial3: true,
-              ),
+              theme: appTheme, //see appTheme.dart
               home: RootPage(),
             );
           } else {
@@ -101,6 +98,3 @@ class _MyAppState extends State<MyApp> {
         });
   }
 }
-
-
-

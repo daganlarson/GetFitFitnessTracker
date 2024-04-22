@@ -1,7 +1,7 @@
 
 import 'package:binarybrigade/models/workout.dart';
 import 'package:binarybrigade/models/firestore.dart';
-import 'package:binarybrigade/views/log_workout.dart';
+import 'package:binarybrigade/views/components/log_workout.dart';
 import 'dart:core';
 
 import 'package:flutter/material.dart';

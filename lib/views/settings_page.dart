@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../models/firestore.dart';
+import '../models/workout.dart';
 import '../providers/LoginProvider.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 
-import 'notifier.dart';
+import 'components/notifier.dart';
 
-import 'youtube_player.dart';
+import 'components/youtube_player.dart';
 
 
 
@@ -53,11 +55,13 @@ class _SettingsPageState extends State<SettingsPage> {
     Provider.of<LoginStatus>(context, listen: false).signOut();
   }
 
-  void player(){
-
+  void saveWorkout() {
+    final workout = Workout("now", DateTime.now(), DateTime.now().add(Duration(hours: 2)), null);
+    workout.addExercise(Exercise("Run", 200, 1000, "description"));
+    Database.saveWorkout(workout);
   }
+  
 
-  //video player button on right top corner
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,9 +80,12 @@ class _SettingsPageState extends State<SettingsPage> {
         ],
       ),
       body: Center(
-        child: ElevatedButton(onPressed: logout, child: const Text("Logout"),),
+        child: Column(children: [
+          ElevatedButton(onPressed: logout, child: const Text("Logout"),),
+    ElevatedButton(onPressed: saveWorkout,
+        child: const Text("Test Firebase"))],
       )
-    );
+    ));
   }
 
 }
