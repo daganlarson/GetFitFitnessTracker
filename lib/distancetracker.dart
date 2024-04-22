@@ -48,17 +48,25 @@ class DistanceTracker {
   late Position m_currentPosition;
   late Position m_lastPosition;
 
-  DistanceTracker();
-  Future<void> trackDistanceTraveled() async{
 
+  Future<void> trackDistanceTraveled() async {
     while (await m_permissionsEnabled != true) {
-
       log('Permissions do not allow location tracking');
       m_permissionsEnabled = determinePermissions();
     }
 
+
     while (m_locationToggle) {
 
+      /*
+      final LocationSettings locationSettings = LocationSettings(
+        accuracy: LocationAccuracy.high,
+        distanceFilter: 1,
+      );
+      StreamSubscription<Position> positionStream = Geolocator.getPositionStream(
+          locationSettings: locationSettings).listen((Position? position) {
+
+        m_distanceTraveled +=1; }); */
       if (m_distanceTraveled == 0) {
         m_currentPosition =  await Geolocator.getCurrentPosition();
       }
@@ -69,6 +77,5 @@ class DistanceTracker {
     log('The total distance you traveled was: $m_distanceTraveled');
 
   }
-
 }
 

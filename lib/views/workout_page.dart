@@ -7,8 +7,10 @@ import 'package:binarybrigade/providers/DatabaseProvider.dart';
 import 'package:flutter/widgets.dart';
 import 'package:googleapis/apigeeregistry/v1.dart';
 import 'package:googleapis/firestore/v1.dart';
+import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../distancetracker.dart';
 import '../models/appTheme.dart';
 import '../models/workout.dart';
 import 'components/log_workout.dart';
@@ -24,8 +26,10 @@ class WorkoutPage extends StatefulWidget {
 
 class _WorkoutPageState extends State<WorkoutPage> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  Duration myDuration = Duration();
-  final StopWatchTimer myStopWatch = Stop
+  final StopWatchTimer _myStopWatch = StopWatchTimer();
+  final _isHours = true;
+  DistanceTracker _myTracker = DistanceTracker();
+
 
 
   //Floating add button that adds a workout
@@ -39,13 +43,11 @@ class _WorkoutPageState extends State<WorkoutPage> {
   ];
   int index = 0; // Selects the customization.
 
-  Widget buildTime() {
-    return Text(
-      '${myDuration.inSeconds}',
-      style: TextStyle(fontSize: 50),
-    );
+  @override
+  void dispose() {
+    super.dispose();
+    _myStopWatch.dispose();
   }
-
   @override
   Widget build(BuildContext context) {
 
@@ -55,7 +57,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
         title: Text('Workout Page'),
       ),
       body: Column(
-        //crossAxisAlignment: CrossAxisAlignment.stretch,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           //CHART stuff
             Container(
@@ -108,27 +110,47 @@ class _WorkoutPageState extends State<WorkoutPage> {
           //const SizedBox(
             //height: 20,
           //),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              minimumSize: Size(280,80),
-            ),
-            onPressed: () {
-              print('distance tracking button pressed');
-            },
-            child: const Column(
-              children: [
-               Icon(Icons.play_circle_fill),
-                Text('Start Distance Tracking Workout')
-              ]
-            )
-          ),
           Container(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: Size(280,80),
+                    ),
+                    onPressed: () {
+                      print('distance tracking button pressed');
+                      _myTracker.m_locationToggle = !_myTracker.m_locationToggle;
+                      if (_myTracker.m_locationToggle) {
+                        //_myStopWatch.onExecute.add(StopWatchExecute.reset);
+                        _myStopWatch.onExecute.add(StopWatchExecute.start);
+                        _myTracker.trackDistanceTraveled();
+
+                      } else {
+                        _myStopWatch.onExecute.add(StopWatchExecute.stop);
+                      }
+
+                    },
+                    child: const Column(
+                        children: [
+                          Icon(Icons.play_circle_fill),
+                          Text('Distance Tracking Workout')
+                        ]
+                    )
+                ),
                 StreamBuilder<int>(
-                  stream
-                )
+                  stream: _myStopWatch.rawTime,
+                  initialData: _myStopWatch.rawTime.value,
+                  builder: (context, snapshot){
+                    final value = snapshot.data;
+                    final displayTime = StopWatchTimer.getDisplayTime(value!, hours: _isHours);
+
+                    return Text(displayTime, style: const TextStyle(
+                        fontSize: 40, fontWeight: FontWeight.bold));
+                  },
+                ),
+              Text(_myTracker.m_distanceTraveled.toString(), style: const TextStyle(
+                  fontSize: 40, fontWeight: FontWeight.bold)),
               ]
             )
           )
