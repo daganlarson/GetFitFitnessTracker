@@ -123,15 +123,15 @@ class _WorkoutPageState extends State<WorkoutPage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => LogWorkout(
-                workout: Workout("Now", DateTime.now(), DateTime.now(), null),
-                exercise: Exercise('Running', 10, 100, 'No Description'),
-              ),
+              builder: (context) => LogWorkout(),
             ),
-          ).then((_) {
-            setState(() {
-              index = (index + 1) % customizations.length;
-            });
+          ).then((savedWorkout) {
+            if (savedWorkout != null) {
+              // Handle saved workout here
+              setState(() {
+                index = (index + 1) % customizations.length;
+              });
+            }
           });
         },
         foregroundColor: customizations[index].$1,
