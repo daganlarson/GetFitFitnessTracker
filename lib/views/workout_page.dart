@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:binarybrigade/models/firestore.dart';
+import 'package:binarybrigade/providers/DatabaseProvider.dart';
 import 'package:googleapis/apigeeregistry/v1.dart';
 import 'package:googleapis/firestore/v1.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';

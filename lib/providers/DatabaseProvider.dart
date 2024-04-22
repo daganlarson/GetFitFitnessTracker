@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import 'workout.dart';
-import 'event.dart';
+import '../models/workout.dart';
+import '../models/event.dart';
 
 class Database {
   static Future<List<Workout>> getWorkouts(DateTimeRange range) async {
@@ -43,7 +43,6 @@ class Database {
       return workout;
   }
 
-  @override
   static Future<bool> saveWorkout(Workout workout) async {
     if (FirebaseAuth.instance.currentUser == null) throw Exception();
     String userId = FirebaseAuth.instance.currentUser!.uid;
@@ -58,7 +57,6 @@ class Database {
     return true;
   }
 
-  @override
   static Future<bool> saveEvent(Event event) async {
     if (FirebaseAuth.instance.currentUser == null) throw Exception();
     String userId = FirebaseAuth.instance.currentUser!.uid;

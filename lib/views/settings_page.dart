@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../models/firestore.dart';
-import '../models/workout.dart';
 import '../providers/LoginProvider.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,8 +9,6 @@ import 'dart:async';
 import 'components/notifier.dart';
 
 import 'components/youtube_player.dart';
-
-
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -55,13 +51,6 @@ class _SettingsPageState extends State<SettingsPage> {
     Provider.of<LoginStatus>(context, listen: false).signOut();
   }
 
-  void saveWorkout() {
-    final workout = Workout("now", DateTime.now(), DateTime.now().add(Duration(hours: 2)), null);
-    workout.addExercise(Exercise("Run", 200, 1000, "description"));
-    Database.saveWorkout(workout);
-  }
-  
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,8 +71,8 @@ class _SettingsPageState extends State<SettingsPage> {
       body: Center(
         child: Column(children: [
           ElevatedButton(onPressed: logout, child: const Text("Logout"),),
-    ElevatedButton(onPressed: saveWorkout,
-        child: const Text("Test Firebase"))],
+          ElevatedButton(onPressed: logout, child: const Text("Delete Account")),
+        ],
       )
     ));
   }

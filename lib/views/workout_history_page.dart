@@ -1,6 +1,6 @@
 
 import 'package:binarybrigade/models/workout.dart';
-import 'package:binarybrigade/models/firestore.dart';
+import 'package:binarybrigade/providers/DatabaseProvider.dart';
 import 'package:binarybrigade/views/components/log_workout.dart';
 import 'dart:core';
 

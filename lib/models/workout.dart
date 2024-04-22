@@ -20,13 +20,21 @@ class Workout {
     m_listOfExercises.add(myExercise);
   }
 
+  void addExercises(Set<Exercise> exercises) {
+    m_listOfExercises.addAll(exercises);
+  }
+
   factory Workout.fromFireStore(DocumentSnapshot<Map<String, dynamic>> snapshot, SnapshotOptions? options,) {
     final data = snapshot.data();
+    final exerciseDocuments = data?['exercises'];
+
+    Set<Exercise> exercises = exerciseDocuments.map((exerciseDocument) => Exercise.fromFirestore(exerciseDocument, options)).toSet();
+    print(exercises);
     return Workout(
         data?['date'],
         data?['startTime'].toDate(),
         data?['endTime'].toDate(),
-        data?['exercises'] is Iterable ? Set.from(data?['exercises']) : null);
+        null);
   }
 
   Map<String, dynamic> toFirestore() {
@@ -34,7 +42,7 @@ class Workout {
       'date': m_date,
       'startTime': m_timeStart,
       'endTime': m_timeEnd,
-      if (m_listOfExercises != null) 'exercises': m_listOfExercises.map((exercise) => exercise.toFirestore()).toList(),
+      'exercises': m_listOfExercises.map((exercise) => exercise.toFirestore()).toList(),
     };
   }
 
