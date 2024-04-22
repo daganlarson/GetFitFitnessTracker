@@ -52,6 +52,10 @@ class _SettingsPageState extends State<SettingsPage> {
     Provider.of<LoginStatus>(context, listen: false).signOut();
   }
 
+  void deleteAccount() {
+    Provider.of<LoginStatus>(context, listen: false).deleteAccount();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -26,9 +26,11 @@ class Workout {
 
   factory Workout.fromFireStore(DocumentSnapshot<Map<String, dynamic>> snapshot, SnapshotOptions? options,) {
     final data = snapshot.data();
+    print(data);
     final exerciseDocuments = data?['exercises'];
-
-    Set<Exercise> exercises = exerciseDocuments.map((exerciseDocument) => Exercise.fromFirestore(exerciseDocument, options)).toSet();
+    print(exerciseDocuments);
+    
+    final exercises = exerciseDocuments.map((exerciseDocument) => Exercise.fromFirestore(exerciseDocument, options)).toSet();
     print(exercises);
     return Workout(
         data?['date'],

@@ -23,6 +23,8 @@ void getWorkouts() async {
 }
 
 Widget testFirebase() {
-  return const ElevatedButton(onPressed: getWorkouts,
-      child: Text("Test Firebase"));
+  return const Column( children: [
+    ElevatedButton(onPressed: getWorkouts, child: Text("Get Workouts")),
+    ElevatedButton(onPressed: saveWorkout, child: Text("Save Workout")),
+  ],);
 }
