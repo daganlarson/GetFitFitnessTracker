@@ -50,6 +50,8 @@ dependencies:
   firebase_messaging: ^14.7.19
   flutter_local_notifications: ^17.0.0
   syncfusion_flutter_charts: ^25.1.40
+  stop_watch_timer:
+
 
 
 dev_dependencies:

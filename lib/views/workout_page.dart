@@ -1,11 +1,15 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:binarybrigade/providers/DatabaseProvider.dart';
+import 'package:flutter/widgets.dart';
 import 'package:googleapis/apigeeregistry/v1.dart';
 import 'package:googleapis/firestore/v1.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../models/appTheme.dart';
 import '../models/workout.dart';
 import 'components/log_workout.dart';
 
@@ -20,6 +24,9 @@ class WorkoutPage extends StatefulWidget {
 
 class _WorkoutPageState extends State<WorkoutPage> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  Duration myDuration = Duration();
+  final StopWatchTimer myStopWatch = Stop
+
 
   //Floating add button that adds a workout
   // The FAB's foregroundColor, backgroundColor, and shape
@@ -32,33 +39,38 @@ class _WorkoutPageState extends State<WorkoutPage> {
   ];
   int index = 0; // Selects the customization.
 
+  Widget buildTime() {
+    return Text(
+      '${myDuration.inSeconds}',
+      style: TextStyle(fontSize: 50),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
 
       appBar: AppBar(
         title: Text('Workout Page'),
       ),
       body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
+        //crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
           //CHART stuff
-          Container(
-            height: 300,
-            child: const SfCartesianChart(
-              //chart stuff
-              //minutes exercised over last 7 (week) days column chart
-              primaryXAxis: CategoryAxis(),
-              title: ChartTitle(text: 'Minutes Exercised Weekly'),
-              legend: Legend(isVisible: true),
+            Container(
+              height: 300,
+              width: 300,
+              child: const SfCartesianChart(
+                //chart stuff
+                //minutes exercised over last 7 (week) days column chart
+                primaryXAxis: CategoryAxis(),
+                title: ChartTitle(text: 'Minutes Exercised Weekly'),
+                legend: Legend(isVisible: true),
 
-              series: [
-
-              ],
-
-
-
-            ),
+                series: [
+                ],
+              ),
           ),
           // StreamBuilder for displaying workout data
           StreamBuilder<QuerySnapshot>(
@@ -93,15 +105,33 @@ class _WorkoutPageState extends State<WorkoutPage> {
                       });
                 }
               }),
-          const SizedBox(
-            height: 20,
+          //const SizedBox(
+            //height: 20,
+          //),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              minimumSize: Size(280,80),
+            ),
+            onPressed: () {
+              print('distance tracking button pressed');
+            },
+            child: const Column(
+              children: [
+               Icon(Icons.play_circle_fill),
+                Text('Start Distance Tracking Workout')
+              ]
+            )
           ),
-          // ElevatedButton(
-          //   onPressed: () {
-          //     // Add functionality for the button
-          //   },
-          //   child: Text('Another Child Widget'),
-          // ),
+          Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                StreamBuilder<int>(
+                  stream
+                )
+              ]
+            )
+          )
         ],
       ),
       floatingActionButton: FloatingActionButton(
