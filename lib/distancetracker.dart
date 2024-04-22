@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:googleapis/androidenterprise/v1.dart';
+import 'package:intl/intl.dart';
+
 
 Future<bool> determinePermissions() async {
   bool serviceEnabled;
@@ -45,9 +47,6 @@ class DistanceTracker {
   bool m_locationToggle = false;
   late Position m_currentPosition;
   late Position m_lastPosition;
-  late DateTime m_startTime;
-  late DateTime m_endTime;
-  late var m_difference;
 
   DistanceTracker();
   Future<void> trackDistanceTraveled() async{
@@ -58,23 +57,15 @@ class DistanceTracker {
       m_permissionsEnabled = determinePermissions();
     }
 
-    m_currentPosition = await Geolocator.getCurrentPosition();
-    m_lastPosition = m_currentPosition;
-
-    log('First Current location: $m_currentPosition');
-    m_startTime = DateTime.now();
-
     while (m_locationToggle) {
 
+      if (m_distanceTraveled == 0) {
+        m_currentPosition =  await Geolocator.getCurrentPosition();
+      }
       m_lastPosition = m_currentPosition;
       m_currentPosition = await Geolocator.getCurrentPosition();
-      //log('Location: $m_currentPosition');
       m_distanceTraveled += Geolocator.distanceBetween(m_lastPosition.latitude.toDouble(), m_lastPosition.longitude.toDouble(), m_currentPosition.latitude.toDouble(), m_currentPosition.longitude.toDouble());
     }
-    m_endTime = DateTime.now();
-    m_difference = m_endTime.difference(m_startTime);
-
-    log('The duration of your workout was: $m_difference');
     log('The total distance you traveled was: $m_distanceTraveled');
 
   }
