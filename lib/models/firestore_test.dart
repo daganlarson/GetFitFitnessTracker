@@ -1,7 +1,7 @@
 import 'package:binarybrigade/models/workout.dart';
 import 'package:flutter/material.dart';
 
-import '../lib/providers/DatabaseProvider.dart';
+import '../providers/DatabaseProvider.dart';
 
 void saveWorkout() {
   final workout = Workout("now", DateTime.now(), DateTime.now().add(const Duration(hours: 2)), null);
@@ -20,6 +20,6 @@ void getWorkouts() async {
 }
 
 Widget testFirebase() {
-  return const ElevatedButton(onPressed: saveWorkout,
+  return const ElevatedButton(onPressed: getWorkouts,
       child: Text("Test Firebase"));
 }

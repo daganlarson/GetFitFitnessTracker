@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../models/firestore_test.dart';
 import '../providers/LoginProvider.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -72,6 +73,7 @@ class _SettingsPageState extends State<SettingsPage> {
         child: Column(children: [
           ElevatedButton(onPressed: logout, child: const Text("Logout"),),
           ElevatedButton(onPressed: logout, child: const Text("Delete Account")),
+          testFirebase(),
         ],
       )
     ));
