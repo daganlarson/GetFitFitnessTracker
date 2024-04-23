@@ -192,7 +192,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
                       print('distance tracking button pressed');
                       _myTracker.m_locationToggle = !_myTracker.m_locationToggle;
                       if (_myTracker.m_locationToggle) {
-                        //_myStopWatch.onExecute.add(StopWatchExecute.reset);
+                        _myStopWatch.onExecute.add(StopWatchExecute.reset);
                         _myStopWatch.onExecute.add(StopWatchExecute.start);
                         _myTracker.trackDistanceTraveled();
 
