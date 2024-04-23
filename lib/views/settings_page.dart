@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../models/firestore_test.dart';
 import '../providers/LoginProvider.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 
-import 'notifier.dart';
+import 'components/notifier.dart';
 
-import 'youtube_player.dart';
-
-
+import 'components/youtube_player.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -53,11 +52,6 @@ class _SettingsPageState extends State<SettingsPage> {
     Provider.of<LoginStatus>(context, listen: false).signOut();
   }
 
-  void player(){
-
-  }
-
-  //video player button on right top corner
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,9 +70,13 @@ class _SettingsPageState extends State<SettingsPage> {
         ],
       ),
       body: Center(
-        child: ElevatedButton(onPressed: logout, child: const Text("Logout"),),
+        child: Column(children: [
+          ElevatedButton(onPressed: logout, child: const Text("Logout"),),
+          ElevatedButton(onPressed: logout, child: const Text("Delete Account")),
+          testFirebase(),
+        ],
       )
-    );
+    ));
   }
 
 }

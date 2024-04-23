@@ -3,6 +3,12 @@ import 'package:binarybrigade/distancetracker.dart';
 
 class DistancePage extends StatefulWidget {
   DistancePage({super.key});
+  
+  @override
+  _DistancePageState createState() => _DistancePageState();
+}
+
+class _DistancePageState extends State<DistancePage> {
 
   DistanceTracker myTracker = DistanceTracker();
   bool distanceTrackerToggle = false;
@@ -17,18 +23,12 @@ class DistancePage extends StatefulWidget {
             child: const Text('Track Distance'),
             onPressed: () {
               myTracker.m_locationToggle = !myTracker.m_locationToggle;
-              if (myTracker.m_locationToggle)
+              if (myTracker.m_locationToggle) {
                 myTracker.trackDistanceTraveled();
+              }
             },
           ),
         )
     );
   }
-  
-  @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    throw UnimplementedError();
-  }
-
 }

@@ -2,26 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:binarybrigade/models/workout.dart';
 import 'package:flutter/services.dart';
 import 'package:googleapis/apigeeregistry/v1.dart';
-import '../models/firestore.dart';
+import '../../providers/DatabaseProvider.dart';
 
-// void main() {
-//   //this is just for testing the file right now:
-//   Workout workout = Workout('2024-03-18', DateTime.now(), DateTime.now(), null);
-//   Exercise exercise = Exercise('Running', 10, 100);
-//
-//   // Run the app with LogWorkout widget
-//   runApp(MaterialApp(home: LogWorkout(workout: workout, exercise: exercise)));
-// }
-//needs to be stateful
+
 class LogWorkout extends StatefulWidget {
   const LogWorkout({
     Key? key,
-    required this.workout,
-    required this.exercise,
+    // required this.workout,
+    // required this.exercise,
   }) : super(key: key);
 
-  final Workout workout;
-  final Exercise exercise;
+  // final Workout workout;
+  // final Exercise exercise;
 
   @override
   _LogWorkoutState createState() => _LogWorkoutState();
@@ -31,15 +23,24 @@ class _LogWorkoutState extends State<LogWorkout> {
   late TimeOfDay _startTime;
   late TimeOfDay _endTime;
   late int _duration = 0;
+  late Workout _workout;
+  late Exercise _exercise;
+
+  //maybe I can SOMEHOW use this
+  late DateTime _selectedDate;
 
   @override
   void initState() {
     super.initState();
     _startTime = TimeOfDay.now();
     _endTime = TimeOfDay.now();
+    _workout = Workout("", DateTime.now(), DateTime.now(), null);
+    _exercise = Exercise("", 0, 0, "");
+
+    //maybe...
+    _selectedDate = DateTime.now();
   }
 
-  //needs to be changed to be a single page with logging textformfields, no log workout button
   //use datetimerange for the date stuff and add calendar picker
   @override
   Widget build(BuildContext context) {
@@ -56,12 +57,13 @@ class _LogWorkoutState extends State<LogWorkout> {
 
             //Date Picker
             ElevatedButton(
+
               onPressed: () => _selectDate(context),
               child: Text('Select Date'),
             ),
             SizedBox(height: 16),
             Text(
-              'Selected Date: ${widget.workout.m_date}',
+              'Selected Date: ${_workout.m_date}',
               style: TextStyle(fontSize: 16),
             ),
             SizedBox(height: 16),
@@ -73,6 +75,7 @@ class _LogWorkoutState extends State<LogWorkout> {
               (time) {
                 setState(() {
                   _startTime = time!;
+                  _calculateDuration();
                 });
               },
             ),
@@ -100,9 +103,7 @@ class _LogWorkoutState extends State<LogWorkout> {
                   labelText: 'Exercise Type', icon: Icon(Icons.directions_run)),
               keyboardType: TextInputType.text,
               onChanged: (value) {
-                widget.workout.m_listOfExercises.forEach((exercise) {
-                  exercise.m_exerciseType = value;
-                });
+                  _exercise.m_exerciseType = value;
               },
             ),
             TextFormField(
@@ -111,18 +112,14 @@ class _LogWorkoutState extends State<LogWorkout> {
                   icon: Icon(Icons.description)),
               keyboardType: TextInputType.text,
               onChanged: (value) {
-                widget.workout.m_listOfExercises.forEach((exercise) {
-                  // exercise.m_exerciseDescription = value;
-                });
+                  _exercise.m_exerciseDescription = value;
               },
             ),
             TextFormField(
               decoration: const InputDecoration(
                   labelText: 'Reps', icon: Icon(Icons.numbers)),
               onChanged: (value) {
-                widget.workout.m_listOfExercises.forEach((exercise) {
-                  exercise.m_numberOfReps = int.parse(value);
-                });
+                  _exercise.m_numberOfReps = int.parse(value);
               },
             ),
             TextFormField(
@@ -130,9 +127,7 @@ class _LogWorkoutState extends State<LogWorkout> {
                   labelText: 'Weight used', icon: Icon(Icons.monitor_weight)),
               keyboardType: TextInputType.number,
               onChanged: (value) {
-                widget.workout.m_listOfExercises.forEach((exercise) {
-                  exercise.m_weightUsed = int.parse(value);
-                });
+                  _exercise.m_weightUsed = int.parse(value);
               },
             ),
             SizedBox(height: 20),
@@ -157,11 +152,21 @@ class _LogWorkoutState extends State<LogWorkout> {
                       _endTime.minute,
                     );
 
+                    //updating exercise variables
+                    Exercise exercise = Exercise(
+                      _exercise.m_exerciseType, // Use the inputted exercise type
+                      _exercise.m_numberOfReps, // Use the inputted number of reps
+                      _exercise.m_weightUsed,   // Use the inputted weight used
+                      _exercise.m_exerciseDescription, // Use the inputted exercise description
+                    );
 
-                    //save workout
-                    widget.workout.m_timeStart = startTime;
-                    widget.workout.m_timeEnd = endTime;
-                    saveWorkout(widget.workout);
+                    // Add the new exercise to the workout
+                    _workout.addExercise(exercise);
+
+                    // Update workout start and end times
+                    _workout.m_timeStart = startTime;
+                    _workout.m_timeEnd = endTime;
+                    saveWorkout(_workout);
 
                     //close page
                     Navigator.of(context).pop();
@@ -183,6 +188,7 @@ class _LogWorkoutState extends State<LogWorkout> {
   }
 
   void saveWorkout(Workout workout) {
+
     Database.saveWorkout(workout);
     print('Workout logged: $workout');
   }
@@ -224,7 +230,7 @@ class _LogWorkoutState extends State<LogWorkout> {
     );
     if (pickedDate != null) {
       setState(() {
-        widget.workout.m_date = pickedDate.toString();
+        _workout.m_date = pickedDate.toString();
       });
     }
   }

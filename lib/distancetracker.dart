@@ -57,10 +57,10 @@ class DistanceTracker {
       log('Permissions do not allow location tracking');
       m_permissionsEnabled = determinePermissions();
     }
-    m_lastPosition = m_currentPosition;
-    m_currentPosition = await Geolocator.getCurrentPosition();
 
     m_currentPosition = await Geolocator.getCurrentPosition();
+    m_lastPosition = m_currentPosition;
+
     log('First Current location: $m_currentPosition');
     m_startTime = DateTime.now();
 
@@ -68,7 +68,7 @@ class DistanceTracker {
 
       m_lastPosition = m_currentPosition;
       m_currentPosition = await Geolocator.getCurrentPosition();
-      log('Location: $m_currentPosition');
+      //log('Location: $m_currentPosition');
       m_distanceTraveled += Geolocator.distanceBetween(m_lastPosition.latitude.toDouble(), m_lastPosition.longitude.toDouble(), m_currentPosition.latitude.toDouble(), m_currentPosition.longitude.toDouble());
     }
     m_endTime = DateTime.now();
@@ -78,7 +78,6 @@ class DistanceTracker {
     log('The total distance you traveled was: $m_distanceTraveled');
 
   }
-
 
 }
 
