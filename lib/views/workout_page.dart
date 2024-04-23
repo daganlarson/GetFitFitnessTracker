@@ -1,11 +1,17 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:binarybrigade/providers/DatabaseProvider.dart';
+import 'package:flutter/widgets.dart';
 import 'package:googleapis/apigeeregistry/v1.dart';
 import 'package:googleapis/firestore/v1.dart';
+import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../distancetracker.dart';
+import '../models/appTheme.dart';
 import '../models/workout.dart';
 import 'components/log_workout.dart';
 
@@ -21,6 +27,10 @@ class WorkoutPage extends StatefulWidget {
 class _WorkoutPageState extends State<WorkoutPage> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  final StopWatchTimer _myStopWatch = StopWatchTimer();
+  final _isHours = true;
+  DistanceTracker _myTracker = DistanceTracker();
+  final Database _database = Database();
   List<_ChartData> chartData = [];
 
   @override
@@ -71,7 +81,13 @@ class _WorkoutPageState extends State<WorkoutPage> {
   int index = 0; // Selects the customization.
 
   @override
+  void dispose() {
+    super.dispose();
+    _myStopWatch.dispose();
+  }
+  @override
   Widget build(BuildContext context) {
+
     return Scaffold(
 
       appBar: AppBar(
@@ -80,7 +96,6 @@ class _WorkoutPageState extends State<WorkoutPage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-
           //CHART stuff
           Container(
             height: 300,
@@ -120,7 +135,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
                   itemCount: snapshot.data?.docs.length,
                   itemBuilder: (context, index) {
                     DocumentSnapshot historyfeed =
-                        snapshot.data?.docs[index] as DocumentSnapshot<Object?>;
+                    snapshot.data?.docs[index] as DocumentSnapshot<Object?>;
 
                     var date = historyfeed['date'];
                     var exercises = historyfeed['exercises'];
@@ -157,9 +172,58 @@ class _WorkoutPageState extends State<WorkoutPage> {
               }
             },
           ),
-          const SizedBox(
-            height: 20,
-          ),
+        const SizedBox(
+          height: 20,
+        ),
+        //this is the button to start distance tracking
+        Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: Size(280,80),
+                    ),
+                    onPressed: () {
+                      print('distance tracking button pressed');
+                      _myTracker.m_locationToggle = !_myTracker.m_locationToggle;
+                      if (_myTracker.m_locationToggle) {
+                        _myStopWatch.onExecute.add(StopWatchExecute.reset);
+                        _myStopWatch.onExecute.add(StopWatchExecute.start);
+                        _myTracker.trackDistanceTraveled();
+
+                      } else {
+                        _myStopWatch.onExecute.add(StopWatchExecute.stop);
+                      }
+
+                    },
+                    child: const Column(
+                        children: [
+                          Icon(Icons.play_circle_fill),
+                          Text('Distance Tracking Workout')
+                        ]
+                    )
+                ),
+                //this is the timer that times how long your distance workout was
+                StreamBuilder<int>(
+                  stream: _myStopWatch.rawTime,
+                  initialData: _myStopWatch.rawTime.value,
+                  builder: (context, snapshot){
+                    final value = snapshot.data;
+                    final displayTime = StopWatchTimer.getDisplayTime(value!, hours: _isHours);
+
+                    return Text(displayTime, style: const TextStyle(
+                        fontSize: 40, fontWeight: FontWeight.bold));
+                  },
+                ),
+              //this shows your distance in meters
+              Text(_myTracker.m_distanceTraveled.toString(), style: const TextStyle(
+                  fontSize: 40, fontWeight: FontWeight.bold)),
+              ]
+            )
+          )
+
+
         ],
       ),
 
