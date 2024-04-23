@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:binarybrigade/models/workout.dart';
 import 'package:flutter/services.dart';
 import 'package:googleapis/apigeeregistry/v1.dart';
-import '../models/firestore.dart';
+import '../../providers/DatabaseProvider.dart';
 
 
 class LogWorkout extends StatefulWidget {

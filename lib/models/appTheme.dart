@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'appColors.dart';
 
-class AppTheme {
-
-  static const colors = AppColors();
-
-  const AppTheme._();
-  static ThemeData define() {
-    return ThemeData(
-      fontFamily: "Satoshi",
-      primaryColor: Color(0xffd5ff5f),
-
-    );
-  }
-}
+final ThemeData appTheme = ThemeData(
+    colorScheme: ColorScheme.fromSeed(
+        seedColor: AppColors.paleLime,
+        brightness: Brightness.dark
+    ),
+    useMaterial3: true,
+    fontFamily: "Satoshi",
+    bottomAppBarTheme: const BottomAppBarTheme(
+      color: AppColors.raisinBlack,
+    )
+);

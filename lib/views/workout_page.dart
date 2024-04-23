@@ -1,26 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:binarybrigade/models/firestore.dart';
+import 'package:binarybrigade/providers/DatabaseProvider.dart';
 import 'package:googleapis/apigeeregistry/v1.dart';
 import 'package:googleapis/firestore/v1.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../models/workout.dart';
-import 'log_workout.dart';
+import 'components/log_workout.dart';
 
 //this will now be the history page with a floating log workout button!
 
 class WorkoutPage extends StatefulWidget {
   const WorkoutPage({super.key});
-
-  @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: Text('Workout Page'),
-        ),
-        body: Center(child: Text('Settings Page')),
-      );
 
   @override
   State<WorkoutPage> createState() => _WorkoutPageState();
@@ -46,7 +38,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
     );
 
     try {
-      List<Workout> workouts = await _database.getWorkouts(lastSevenDays);
+      List<Workout> workouts = await Database.getWorkouts(lastSevenDays);
 
       List<int> dailyMinutes = List.filled(7, 0);
 
@@ -81,6 +73,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       appBar: AppBar(
         title: Text('Workout Page'),
       ),
@@ -199,6 +192,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
         child: Icon(Icons.add),
       ),
     );
+
   }
 }
 

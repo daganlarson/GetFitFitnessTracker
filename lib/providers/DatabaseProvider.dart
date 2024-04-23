@@ -2,11 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import 'workout.dart';
-
+import '../models/workout.dart';
+import '../models/event.dart';
 
 class Database {
-  Future<List<Workout>> getWorkouts(DateTimeRange range) async {
+  static Future<List<Workout>> getWorkouts(DateTimeRange range) async {
       if (FirebaseAuth.instance.currentUser == null) throw Exception();
       String userId = FirebaseAuth.instance.currentUser!.uid;
 
@@ -26,8 +26,7 @@ class Database {
       return data;
   }
 
-  @override
-  Future<Workout> getWorkout() async {
+  static Future<Workout> getWorkout() async {
     if (FirebaseAuth.instance.currentUser == null) throw Exception();
     String userId = FirebaseAuth.instance.currentUser!.uid;
 
@@ -44,7 +43,6 @@ class Database {
       return workout;
   }
 
-  @override
   static Future<bool> saveWorkout(Workout workout) async {
     if (FirebaseAuth.instance.currentUser == null) throw Exception();
     String userId = FirebaseAuth.instance.currentUser!.uid;
@@ -58,4 +56,38 @@ class Database {
         .add(workout);
     return true;
   }
+
+  static Future<bool> saveEvent(Event event) async {
+    if (FirebaseAuth.instance.currentUser == null) throw Exception();
+    String userId = FirebaseAuth.instance.currentUser!.uid;
+
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(userId).collection("events")
+        .withConverter(
+        fromFirestore: Event.fromFireStore,
+        toFirestore: (Event event, options) => event.toFirestore())
+        .add(event);
+    return true;
+  }
+
+  Future<List<Workout>> getEvents() async {
+    if (FirebaseAuth.instance.currentUser == null) throw Exception();
+    String userId = FirebaseAuth.instance.currentUser!.uid;
+
+    Query<Workout> query = FirebaseFirestore.instance.collection("users")
+        .doc(userId).collection('workouts')
+        .withConverter(
+        fromFirestore: Workout.fromFireStore,
+        toFirestore: (Workout workout, options) => workout.toFirestore());
+    var snapshot = await query.get();
+    var snapshots = snapshot.docs;
+    List<Workout> data = [];
+    for (var x in snapshots) {
+      data.add(x.data());
+    }
+    return data;
+  }
+
 }
+
