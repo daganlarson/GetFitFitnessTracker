@@ -122,11 +122,11 @@ class _WorkoutPageState extends State<WorkoutPage> {
             stream: _firestore.collection('workouts').snapshots(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
+                return const Center(
                   child: CircularProgressIndicator(),
                 );
               } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                return Center(
+                return const Center(
                   child: Text("No workouts saved"),
                 );
               } else {
@@ -135,6 +135,12 @@ class _WorkoutPageState extends State<WorkoutPage> {
                   itemBuilder: (context, index) {
                     DocumentSnapshot historyfeed =
                         snapshot.data?.docs[index] as DocumentSnapshot<Object?>;
+
+                    var date = historyfeed['date'];
+                    var exercises = historyfeed['exercises'];
+
+                    List<String> exerciseTypes = exercises.map((exercise) => exercise['exerciseType']).toList();
+
                     return Stack(children: <Widget>[
                       SizedBox(
                           width: MediaQuery.of(context).size.width,
@@ -150,14 +156,14 @@ class _WorkoutPageState extends State<WorkoutPage> {
                                           child: Column(children: <Widget>[
                                             SizedBox(height: 10),
                                             Text(
-                                              '${historyfeed['exerciseType']}',
+                                              'Date: $date',
                                               style: TextStyle(fontSize: 20.0),
                                             ),
                                             SizedBox(height: 10),
                                             Text(
-                                              '${historyfeed['date']}',
+                                              'Exercise Types: ${exerciseTypes.join(', ')}',
                                               style: TextStyle(fontSize: 10.0),
-                                            )
+                                            ),
                                           ]))))))
                     ]);
                   },
