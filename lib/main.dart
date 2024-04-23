@@ -1,5 +1,8 @@
+
+import 'package:binarybrigade/views/eventwidget.dart';
 import 'package:binarybrigade/views/root_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:googleapis/apigeeregistry/v1.dart';
 
 import 'views/home_page.dart';
 import 'views/login_page.dart';
@@ -46,9 +49,20 @@ void main() async {
     Event tempEvent = Event(results[x]);
     eventList.add(tempEvent);
   }
+  WidgetsFlutterBinding.ensureInitialized();
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  FlutterLocalNotificationsPlugin();
+// initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
+  const AndroidInitializationSettings initializationSettingsAndroid =
+  AndroidInitializationSettings('@mipmap/ic_launcher');
+  final InitializationSettings initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid);
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
 
   runApp(MyApp());
 }
+
+
 
 
 Future<List> searchEvents() async{
@@ -75,6 +89,7 @@ class _MyAppState extends State<MyApp> {
     Notifications.initialize();
   }
 
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -99,6 +114,8 @@ class _MyAppState extends State<MyApp> {
             return loading;
           }
         });
+
+
   }
 }
 
