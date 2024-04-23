@@ -180,6 +180,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
         const SizedBox(
           height: 20,
         ),
+        //this is the button to start distance tracking
         Container(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -208,6 +209,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
                         ]
                     )
                 ),
+                //this is the timer that times how long your distance workout was
                 StreamBuilder<int>(
                   stream: _myStopWatch.rawTime,
                   initialData: _myStopWatch.rawTime.value,
@@ -219,6 +221,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
                         fontSize: 40, fontWeight: FontWeight.bold));
                   },
                 ),
+              //this shows your distance in meters
               Text(_myTracker.m_distanceTraveled.toString(), style: const TextStyle(
                   fontSize: 40, fontWeight: FontWeight.bold)),
               ]
