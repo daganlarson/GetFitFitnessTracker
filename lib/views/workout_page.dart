@@ -20,7 +20,6 @@ class WorkoutPage extends StatefulWidget {
 
 class _WorkoutPageState extends State<WorkoutPage> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final Database _database = Database();
 
   List<_ChartData> chartData = [];
 
@@ -36,6 +35,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
       start: now.subtract(Duration(days: 6)),
       end: now,
     );
+
 
     try {
       List<Workout> workouts = await Database.getWorkouts(lastSevenDays);
@@ -60,7 +60,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
   }
 
   //Floating add button that adds a workout
-  // The FAB's foregroundColor, backgroundColor, and shape
+  // The FAB's foregroundColor, backgroundColor, and shape (not necessary but eh)
   static const List<(Color?, Color? background, ShapeBorder?)> customizations =
       <(Color?, Color?, ShapeBorder?)>[
     (null, null, null), // The FAB uses its default for null parameters.
@@ -81,19 +81,13 @@ class _WorkoutPageState extends State<WorkoutPage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
 
-
           //CHART stuff
           Container(
             height: 300,
             child: SfCartesianChart(
               //chart stuff
               //minutes exercised over last 7 (week) days column chart
-              primaryXAxis: CategoryAxis(
-                  // labels: ChartAxisLabel(
-                  //   isVisible: true,
-                  //   categories: ['Sun', 'Mon', 'Tues', 'Wed', 'Thu', 'Fri', 'Sat'],
-                  // )
-                  ),
+              primaryXAxis: CategoryAxis(),
               title: const ChartTitle(text: 'Minutes Exercised Weekly'),
               legend: const Legend(isVisible: true),
 
@@ -103,7 +97,6 @@ class _WorkoutPageState extends State<WorkoutPage> {
                   xValueMapper: (_ChartData data, _) => data.dayOfWeek,
                   yValueMapper: (_ChartData data, _) => data.minutes,
                   //will need to be changed
-                  color: Colors.green,
                 )
               ],
             ),
@@ -195,6 +188,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
 
   }
 }
+
 
 class _ChartData {
   final int dayOfWeek;
