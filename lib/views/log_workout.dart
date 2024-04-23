@@ -26,6 +26,9 @@ class _LogWorkoutState extends State<LogWorkout> {
   late Workout _workout;
   late Exercise _exercise;
 
+  //maybe I can SOMEHOW use this
+  late DateTime _selectedDate;
+
   @override
   void initState() {
     super.initState();
@@ -33,6 +36,9 @@ class _LogWorkoutState extends State<LogWorkout> {
     _endTime = TimeOfDay.now();
     _workout = Workout("", DateTime.now(), DateTime.now(), null);
     _exercise = Exercise("", 0, 0, "");
+
+    //maybe...
+    _selectedDate = DateTime.now();
   }
 
   //use datetimerange for the date stuff and add calendar picker

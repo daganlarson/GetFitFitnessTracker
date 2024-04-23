@@ -20,6 +20,11 @@ class Workout {
     m_listOfExercises.add(myExercise);
   }
 
+  int durationInMinutes() {
+    Duration duration = m_timeEnd.difference(m_timeStart);
+    return duration.inMinutes;
+  }
+
   factory Workout.fromFireStore(DocumentSnapshot<Map<String, dynamic>> snapshot, SnapshotOptions? options,) {
     final data = snapshot.data();
     return Workout(

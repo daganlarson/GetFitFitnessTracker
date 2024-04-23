@@ -28,9 +28,49 @@ class WorkoutPage extends StatefulWidget {
   State<WorkoutPage> createState() => _WorkoutPageState();
 }
 
+class _ChartData {
+  final DateTime date;
+  final int minutes;
+
+  _ChartData(this.date, this.minutes);
+}
+
 class _WorkoutPageState extends State<WorkoutPage> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  //late List<_ChartData>
+  final Database _database = Database();
+
+  List<_ChartData> chartData = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchWorkouts();
+  }
+
+  void _fetchWorkouts() async {
+    DateTime now = DateTime.now();
+    DateTimeRange lastSevenDays = DateTimeRange(
+      start: now.subtract(Duration(days: 6)),
+      end: now,
+    );
+
+    try {
+      List<Workout> workouts = await _database.getWorkouts(lastSevenDays);
+
+      Map<DateTime, int> dailyDurationMap = {};
+      for (Workout workout in workouts) {
+        DateTime date = workout.m_timeStart.toLocal().date;
+        dailyDurationMap[date] =
+        ((dailyDurationMap[date] ?? 0) + workout.durationInMinutes()) as int;
+      }
+      chartData = dailyDurationMap.entries
+          .map((entry) => _ChartData(entry.key, entry.value))
+          .toList();
+      setState(() {});
+    } catch (e) {
+      print("Error getting workouts: $e");
+    }
+  }
 
   //Floating add button that adds a workout
   // The FAB's foregroundColor, backgroundColor, and shape
@@ -55,7 +95,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
           //CHART stuff
           Container(
             height: 300,
-            child: const SfCartesianChart(
+            child: SfCartesianChart(
               //chart stuff
               //minutes exercised over last 7 (week) days column chart
               primaryXAxis: CategoryAxis(),
@@ -63,10 +103,11 @@ class _WorkoutPageState extends State<WorkoutPage> {
               legend: Legend(isVisible: true),
 
               series: <CartesianSeries>[
-                // ColumnSeries<>(
-                //   dataSource: data,
-                //   xValueMapper: ,
-                // )
+                ColumnSeries<_ChartData, DateTime>(
+                  dataSource: chartData,
+                  xValueMapper: (_ChartData data, _) => data.date,
+                  yValueMapper: (_ChartData data, _) => data.minutes,
+                )
 
               ],
 
@@ -110,12 +151,6 @@ class _WorkoutPageState extends State<WorkoutPage> {
           const SizedBox(
             height: 20,
           ),
-          // ElevatedButton(
-          //   onPressed: () {
-          //     // Add functionality for the button
-          //   },
-          //   child: Text('Another Child Widget'),
-          // ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -142,3 +177,4 @@ class _WorkoutPageState extends State<WorkoutPage> {
     );
   }
 }
+
