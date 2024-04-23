@@ -1,5 +1,3 @@
-
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -28,13 +26,6 @@ class WorkoutPage extends StatefulWidget {
   State<WorkoutPage> createState() => _WorkoutPageState();
 }
 
-class _ChartData {
-  final DateTime date;
-  final int minutes;
-
-  _ChartData(this.date, this.minutes);
-}
-
 class _WorkoutPageState extends State<WorkoutPage> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final Database _database = Database();
@@ -57,15 +48,19 @@ class _WorkoutPageState extends State<WorkoutPage> {
     try {
       List<Workout> workouts = await _database.getWorkouts(lastSevenDays);
 
-      Map<DateTime, int> dailyDurationMap = {};
+      List<int> dailyMinutes = List.filled(7, 0);
+
       for (Workout workout in workouts) {
-        DateTime date = workout.m_timeStart.toLocal().date;
-        dailyDurationMap[date] =
-        ((dailyDurationMap[date] ?? 0) + workout.durationInMinutes()) as int;
+        int dayOfWeek = workout.m_timeStart.weekday;
+        // Subtract 1 from dayOfWeek to match the zero-based index of the list
+        dailyMinutes[dayOfWeek - 1] += workout.durationInMinutes();
       }
-      chartData = dailyDurationMap.entries
-          .map((entry) => _ChartData(entry.key, entry.value))
-          .toList();
+
+      chartData = List.generate(
+        dailyMinutes.length,
+        (index) => _ChartData(index, dailyMinutes[index]),
+      );
+
       setState(() {});
     } catch (e) {
       print("Error getting workouts: $e");
@@ -92,67 +87,90 @@ class _WorkoutPageState extends State<WorkoutPage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+
+
           //CHART stuff
           Container(
             height: 300,
             child: SfCartesianChart(
               //chart stuff
               //minutes exercised over last 7 (week) days column chart
-              primaryXAxis: CategoryAxis(),
-              title: ChartTitle(text: 'Minutes Exercised Weekly'),
-              legend: Legend(isVisible: true),
+              primaryXAxis: CategoryAxis(
+                  // labels: ChartAxisLabel(
+                  //   isVisible: true,
+                  //   categories: ['Sun', 'Mon', 'Tues', 'Wed', 'Thu', 'Fri', 'Sat'],
+                  // )
+                  ),
+              title: const ChartTitle(text: 'Minutes Exercised Weekly'),
+              legend: const Legend(isVisible: true),
 
               series: <CartesianSeries>[
-                ColumnSeries<_ChartData, DateTime>(
+                ColumnSeries<_ChartData, int>(
                   dataSource: chartData,
-                  xValueMapper: (_ChartData data, _) => data.date,
+                  xValueMapper: (_ChartData data, _) => data.dayOfWeek,
                   yValueMapper: (_ChartData data, _) => data.minutes,
+                  //will need to be changed
+                  color: Colors.green,
                 )
-
               ],
-
-
-
             ),
           ),
+
+
           // StreamBuilder for displaying workout data
           StreamBuilder<QuerySnapshot>(
-              stream: _firestore.collection('workouts').snapshots(),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else {
-                  return ListView.builder(
-                      itemCount: snapshot.data!.docs.length,
-                      itemBuilder: (context, index) {
-                        final workoutData =
-                            snapshot.data!.docs[index].data(); //getting errors
-                        //final workout = workoutData['workout'];
-                        return Stack(children: <Widget>[
-                          Container(
-                              width: MediaQuery.of(context).size.width,
-                              height: 350.0,
-                              child: const Padding(
-                                  padding:
-                                      EdgeInsets.only(top: 8.0, bottom: 8.0),
-                                  child: Material(
-                                      elevation: 14.0,
-                                      child: Center(
-                                          child: Padding(
-                                              padding: EdgeInsets.all(8.0),
-                                              child: Column(
-                                                  children: <Widget>[]))))))
-                        ]);
-                      });
-                }
-              }),
+            stream: _firestore.collection('workouts').snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                return Center(
+                  child: Text("No workouts saved"),
+                );
+              } else {
+                return ListView.builder(
+                  itemCount: snapshot.data?.docs.length,
+                  itemBuilder: (context, index) {
+                    DocumentSnapshot historyfeed =
+                        snapshot.data?.docs[index] as DocumentSnapshot<Object?>;
+                    return Stack(children: <Widget>[
+                      SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          height: 200,
+                          child: Padding(
+                              padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
+                              child: Material(
+                                  color: Colors.white,
+                                  elevation: 14.0,
+                                  child: Center(
+                                      child: Padding(
+                                          padding: EdgeInsets.all(8.0),
+                                          child: Column(children: <Widget>[
+                                            SizedBox(height: 10),
+                                            Text(
+                                              '${historyfeed['exerciseType']}',
+                                              style: TextStyle(fontSize: 20.0),
+                                            ),
+                                            SizedBox(height: 10),
+                                            Text(
+                                              '${historyfeed['date']}',
+                                              style: TextStyle(fontSize: 10.0),
+                                            )
+                                          ]))))))
+                    ]);
+                  },
+                );
+              }
+            },
+          ),
           const SizedBox(
             height: 20,
           ),
         ],
       ),
+
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
@@ -178,3 +196,9 @@ class _WorkoutPageState extends State<WorkoutPage> {
   }
 }
 
+class _ChartData {
+  final int dayOfWeek;
+  final int minutes;
+
+  _ChartData(this.dayOfWeek, this.minutes);
+}
