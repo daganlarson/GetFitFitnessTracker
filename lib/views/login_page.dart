@@ -17,6 +17,7 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController _password = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   final _key = GlobalKey<ScaffoldState>();
+  bool _isObscure = true;
 
   @override
   void initState() {
@@ -52,12 +53,23 @@ class _LoginPageState extends State<LoginPage> {
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: TextFormField(
+                  obscureText: _isObscure,
                   controller: _password,
                   validator: (value) => (value == null || value.isEmpty) ? "Please Enter Password" : null,
-                  decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.lock),
+                  decoration: InputDecoration(
+                  prefixIcon: const Icon(Icons.lock),
                   labelText: "Password",
-                  border: OutlineInputBorder()),
+                  border: const OutlineInputBorder(),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                        _isObscure ? Icons.visibility : Icons.visibility_off),
+                    onPressed: () {
+                      setState(() {
+                        _isObscure = !_isObscure;
+                      });
+                    },
+
+                  )),
 
                 ),
               ),
@@ -68,7 +80,7 @@ class _LoginPageState extends State<LoginPage> {
                       child: Material(
                       elevation: 5.0,
                       borderRadius: BorderRadius.circular(30.0),
-                      color: Colors.deepPurple,
+                      color: Theme.of(context).colorScheme.primary,
                       child: MaterialButton(
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
@@ -86,7 +98,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: Material(
                   elevation: 5.0,
                   borderRadius: BorderRadius.circular(30.0),
-                  color: Colors.deepPurple,
+                  color: Theme.of(context).colorScheme.primary,
                   child: MaterialButton(
                   onPressed: () async {
                   if (_formKey.currentState!.validate()) {

@@ -52,6 +52,22 @@ class _SettingsPageState extends State<SettingsPage> {
     Provider.of<LoginStatus>(context, listen: false).signOut();
   }
 
+  void deleteAccount() {
+    showDialog<String>(context: context, builder:
+    (BuildContext context) => AlertDialog(
+      title: const Text("Delete Account"),
+      actions: [
+        TextButton(onPressed: () => Navigator.pop(context, 'Cancel'), child: const Text('Cancel')),
+        TextButton(onPressed: () => {
+          Navigator.pop(context, 'Delete'),
+          Provider.of<LoginStatus>(context, listen: false).deleteAccount();
+        }, child: const Text("DELETE")),
+      ],
+    )
+    );
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,7 +88,7 @@ class _SettingsPageState extends State<SettingsPage> {
       body: Center(
         child: Column(children: [
           ElevatedButton(onPressed: logout, child: const Text("Logout"),),
-          ElevatedButton(onPressed: logout, child: const Text("Delete Account")),
+          ElevatedButton(onPressed: deleteAccount, child: const Text("Delete Account")),
           testFirebase(),
         ],
       )
