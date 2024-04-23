@@ -102,8 +102,8 @@ class _WorkoutPageState extends State<WorkoutPage> {
                   dataSource: chartData,
                   xValueMapper: (_ChartData data, _) => data.dayOfWeek,
                   yValueMapper: (_ChartData data, _) => data.minutes,
+                  color: Theme.of(context).colorScheme.primary,
                   //will need to be changed
-                  color: Colors.green,
                 )
               ],
             ),
@@ -167,7 +167,6 @@ class _WorkoutPageState extends State<WorkoutPage> {
           const SizedBox(
             height: 20,
           ),
-          WorkoutFeed(),
         ],
       ),
 

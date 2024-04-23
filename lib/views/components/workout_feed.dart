@@ -7,6 +7,8 @@ import 'package:flutter/cupertino.dart';
 import '../../models/workout.dart';
 
 class WorkoutFeed extends StatefulWidget {
+  const WorkoutFeed({super.key});
+
   @override
   State<WorkoutFeed> createState() => _WorkoutFeedState();
 }
