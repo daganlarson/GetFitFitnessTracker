@@ -1,3 +1,4 @@
+import 'package:binarybrigade/views/components/workout_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,8 +9,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../models/workout.dart';
 import 'components/log_workout.dart';
-
-//this will now be the history page with a floating log workout button!
+import 'components/workout_feed.dart';
 
 class WorkoutPage extends StatefulWidget {
   const WorkoutPage({super.key});
@@ -88,7 +88,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
             child: SfCartesianChart(
               //chart stuff
               //minutes exercised over last 7 (week) days column chart
-              primaryXAxis: CategoryAxis(
+              primaryXAxis: const CategoryAxis(
                   // labels: ChartAxisLabel(
                   //   isVisible: true,
                   //   categories: ['Sun', 'Mon', 'Tues', 'Wed', 'Thu', 'Fri', 'Sat'],
@@ -167,6 +167,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
           const SizedBox(
             height: 20,
           ),
+          WorkoutFeed(),
         ],
       ),
 
