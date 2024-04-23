@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'notifier.dart';
 
+import 'youtube_player.dart';
+
 
 
 class SettingsPage extends StatefulWidget {
@@ -50,14 +52,33 @@ class _SettingsPageState extends State<SettingsPage> {
   void logout() {
     Provider.of<LoginStatus>(context, listen: false).signOut();
   }
-  
+
+  void player(){
+
+  }
+
+  //video player button on right top corner
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar:AppBar(
+        title: Text('Settings'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.music_video_outlined),
+            onPressed: (){
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Youtube_Player()),
+              );
+            }
+          ),
+        ],
+      ),
       body: Center(
         child: ElevatedButton(onPressed: logout, child: const Text("Logout"),),
       )
     );
   }
-  
+
 }
