@@ -1,5 +1,6 @@
-import 'package:binarybrigade/models/appTheme.dart';
 import 'package:binarybrigade/views/root_page.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:binarybrigade/models/appTheme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -7,11 +8,19 @@ import 'firebase_options.dart';
 import 'package:binarybrigade/views/components/notifications.dart';
 
 void main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  FlutterLocalNotificationsPlugin();
+// initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
+  const AndroidInitializationSettings initializationSettingsAndroid =
+  AndroidInitializationSettings('@mipmap/ic_launcher');
+  final InitializationSettings initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid);
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+
   runApp(MyApp());
 }
-
-
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -27,6 +36,7 @@ class _MyAppState extends State<MyApp> {
     // Initialise  localnotification
     Notifications.initialize();
   }
+
 
   // This widget is the root of your application.
   @override
@@ -49,5 +59,7 @@ class _MyAppState extends State<MyApp> {
             return loading;
           }
         });
+
+
   }
 }

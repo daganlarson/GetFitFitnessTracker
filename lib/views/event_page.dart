@@ -1,3 +1,4 @@
+import 'package:binarybrigade/views/loading_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -49,7 +50,7 @@ class _EventPageState extends State<EventPage> {
 
   @override
   Widget build(BuildContext context) {
-    return isLoading ? Scaffold() : _eventsScreen();
+    return isLoading ? const LoadingPage() : _eventsScreen();
   }
 
   Widget _eventsScreen() {

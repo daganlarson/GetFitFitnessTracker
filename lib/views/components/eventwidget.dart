@@ -3,9 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:binarybrigade/models/event.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:binarybrigade/views/components/notifications.dart';
 import 'package:binarybrigade/providers/DatabaseProvider.dart';
 
-import '../../models/appColors.dart';
 
 class EventWidget extends StatelessWidget {
   Event thisEvent;
@@ -46,6 +46,10 @@ class EventWidget extends StatelessWidget {
   }
   void onSave(){
     Database.saveEvent(thisEvent);
+    int length = thisEvent.dates.millisecondsSinceEpoch-DateTime.now().millisecondsSinceEpoch - 86400000;
+    Notifications.scheduleEvent(title: thisEvent.name +" is soon!", message: "An event you were interested is happening tomorrow! Don't forget!", length: length);
+
+
   }
 }
 

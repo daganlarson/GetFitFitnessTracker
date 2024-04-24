@@ -10,12 +10,9 @@ void saveWorkout() {
 }
 
 void getWorkouts() async {
-  print("get workouts called");
   DateTime now = DateTime.now();
   final List<Workout> workouts = await Database.getWorkouts(
       DateTimeRange(start: now.subtract(const Duration(days: 300)), end: now));
-  print("workouts recieved");
-  print(workouts);
   Workout workout;
   for (workout in workouts) {
     print(workout.toString());
@@ -23,6 +20,8 @@ void getWorkouts() async {
 }
 
 Widget testFirebase() {
-  return const ElevatedButton(onPressed: getWorkouts,
-      child: Text("Test Firebase"));
+  return const Column( children: [
+    ElevatedButton(onPressed: getWorkouts, child: Text("Get Workouts")),
+    ElevatedButton(onPressed: saveWorkout, child: Text("Save Workout")),
+  ],);
 }

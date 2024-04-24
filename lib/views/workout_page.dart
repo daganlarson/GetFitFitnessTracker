@@ -1,21 +1,14 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:binarybrigade/providers/DatabaseProvider.dart';
-import 'package:flutter/widgets.dart';
-import 'package:googleapis/apigeeregistry/v1.dart';
-import 'package:googleapis/firestore/v1.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../distancetracker.dart';
-import '../models/appTheme.dart';
 import '../models/workout.dart';
 import 'components/log_workout.dart';
-
-//this will now be the history page with a floating log workout button!
+import 'components/workout_feed.dart';
+import 'components/youtube_player.dart';
 
 class WorkoutPage extends StatefulWidget {
   const WorkoutPage({super.key});
@@ -29,7 +22,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
 
   final StopWatchTimer _myStopWatch = StopWatchTimer();
   final _isHours = true;
-  DistanceTracker _myTracker = DistanceTracker();
+  final DistanceTracker _myTracker = DistanceTracker();
   final Database _database = Database();
   List<_ChartData> chartData = [];
 
@@ -42,7 +35,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
   void _fetchWorkouts() async {
     DateTime now = DateTime.now();
     DateTimeRange lastSevenDays = DateTimeRange(
-      start: now.subtract(Duration(days: 6)),
+      start: now.subtract(const Duration(days: 6)),
       end: now,
     );
 
@@ -91,7 +84,18 @@ class _WorkoutPageState extends State<WorkoutPage> {
     return Scaffold(
 
       appBar: AppBar(
-        title: Text('Workout Page'),
+        title: const Text('Workout Page'),
+        actions: [
+          IconButton(
+          icon: Icon(Icons.music_video_outlined),
+            onPressed: (){
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Youtube_Player()),
+              );
+          }
+         ),
+        ],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -111,70 +115,12 @@ class _WorkoutPageState extends State<WorkoutPage> {
                   dataSource: chartData,
                   xValueMapper: (_ChartData data, _) => data.dayOfWeek,
                   yValueMapper: (_ChartData data, _) => data.minutes,
+                  color: Theme.of(context).colorScheme.primary,
                   //will need to be changed
                 )
               ],
             ),
           ),
-
-
-          // StreamBuilder for displaying workout data
-          StreamBuilder<QuerySnapshot>(
-            stream: _firestore.collection('workouts').snapshots(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                return const Center(
-                  child: Text("No workouts saved"),
-                );
-              } else {
-                return ListView.builder(
-                  itemCount: snapshot.data?.docs.length,
-                  itemBuilder: (context, index) {
-                    DocumentSnapshot historyfeed =
-                    snapshot.data?.docs[index] as DocumentSnapshot<Object?>;
-
-                    var date = historyfeed['date'];
-                    var exercises = historyfeed['exercises'];
-
-                    List<String> exerciseTypes = exercises.map((exercise) => exercise['exerciseType']).toList();
-
-                    return Stack(children: <Widget>[
-                      SizedBox(
-                          width: MediaQuery.of(context).size.width,
-                          height: 200,
-                          child: Padding(
-                              padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
-                              child: Material(
-                                  color: Colors.white,
-                                  elevation: 14.0,
-                                  child: Center(
-                                      child: Padding(
-                                          padding: EdgeInsets.all(8.0),
-                                          child: Column(children: <Widget>[
-                                            SizedBox(height: 10),
-                                            Text(
-                                              'Date: $date',
-                                              style: TextStyle(fontSize: 20.0),
-                                            ),
-                                            SizedBox(height: 10),
-                                            Text(
-                                              'Exercise Types: ${exerciseTypes.join(', ')}',
-                                              style: TextStyle(fontSize: 10.0),
-                                            ),
-                                          ]))))))
-                    ]);
-                  },
-                );
-              }
-            },
-          ),
-        const SizedBox(
-          height: 20,
-        ),
         //this is the button to start distance tracking
         Container(
             child: Column(
@@ -221,9 +167,8 @@ class _WorkoutPageState extends State<WorkoutPage> {
                   fontSize: 40, fontWeight: FontWeight.bold)),
               ]
             )
-          )
-
-
+          ),
+          workoutFeedButton(context),
         ],
       ),
 
