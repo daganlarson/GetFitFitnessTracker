@@ -6,7 +6,7 @@ import '../distancetracker.dart';
 import '../models/appTheme.dart';
 import 'benefits_page.dart';
 import 'components/workout_feed.dart';
-import 'distance_page.dart';
+import 'components/distance_widget.dart';
 import 'components/eventwidget.dart';
 import '../main.dart';
 import 'event_page.dart';
@@ -25,18 +25,11 @@ class _HomePageState extends State<HomePage> {
   bool distanceTrackerToggle = false;
   int pageIndex = 0;
 
-  final screens = [
-    const WorkoutPage(),
-    Column(children: [
-      WorkoutWidget(
-        Workout(null,
-          DateTime.now().subtract(const Duration(hours: 2)),
-          DateTime.now(),
-          {Exercise("Walk", 0,0, "I walked")}
-        )
-        ),]),
-    WorkoutFeed(),
-    const SettingsPage()
+  static const screens = [
+    WorkoutPage(),
+    EventPage(),
+    BenefitsPage(),
+    SettingsPage()
   ];
 
   @override

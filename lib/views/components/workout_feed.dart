@@ -93,10 +93,11 @@ class _WorkoutFeedState extends State<WorkoutFeed> {
 }
 
 ElevatedButton workoutFeedButton(BuildContext context) {
-  return ElevatedButton(onPressed: () {
+  return ElevatedButton(
+    onPressed: () {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => WorkoutFeed()),
+      MaterialPageRoute(builder: (context) => const WorkoutFeed()),
     );
   }, child: const Text("Previous Workouts"),
   );

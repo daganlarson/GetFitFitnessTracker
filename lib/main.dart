@@ -1,12 +1,6 @@
-import 'package:binarybrigade/views/components/eventwidget.dart';
 import 'package:binarybrigade/views/root_page.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:googleapis/apigeeregistry/v1.dart';
-import 'views/home_page.dart';
-import 'views/login_page.dart';
 import 'package:binarybrigade/models/appTheme.dart';
-import 'package:binarybrigade/views/root_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 

@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../models/firestore_test.dart';
 import '../providers/LoginProvider.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 
 import 'components/notifier.dart';
-import 'components/workout_feed.dart';
-import 'components/youtube_player.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -61,23 +57,11 @@ class _SettingsPageState extends State<SettingsPage> {
     return Scaffold(
       appBar:AppBar(
         title: Text('Settings'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.music_video_outlined),
-            onPressed: (){
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Youtube_Player()),
-              );
-            }
-          ),
-        ],
       ),
       body: Center(
         child: Column(children: [
           ElevatedButton(onPressed: logout, child: const Text("Logout"),),
           ElevatedButton(onPressed: logout, child: const Text("Delete Account")),
-          testFirebase(),
         ],
       )
     ));

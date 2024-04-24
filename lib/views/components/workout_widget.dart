@@ -24,7 +24,7 @@ class _WorkoutWidgetState extends State<WorkoutWidget> {
   Widget build(BuildContext context) {
     Duration duration = workout.m_timeEnd.difference(workout.m_timeStart);
     String hours = duration.inHours.toString();
-    String date  = '${workout.m_timeStart.month.toString()}/${workout.m_timeStart.day.toString()} at ${workout.m_timeStart.toUtc()}';
+    String date  = '${workout.m_timeStart.month.toString()}/${workout.m_timeStart.day.toString()}';
     List<String> exerciseTypes = workout.m_listOfExercises.map((e) => e.m_exerciseType.toString()).toList();
 
     return GestureDetector(
@@ -32,12 +32,12 @@ class _WorkoutWidgetState extends State<WorkoutWidget> {
           width: MediaQuery.of(context).size.width,
           height: 200,
           child: Padding(
-              padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
+              padding: const EdgeInsets.all(16),
               child: Material(
                   elevation: 14.0,
                   child: Center(
                       child: Padding(
-                          padding: EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.all(8.0),
                           child: Column(children: <Widget>[
                             SizedBox(height: 10),
                             Text(
