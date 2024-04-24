@@ -11,8 +11,6 @@ class DistancePage extends StatefulWidget {
 class _DistancePageState extends State<DistancePage> {
 
   DistanceTracker myTracker = DistanceTracker();
-  bool distanceTrackerToggle = false;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

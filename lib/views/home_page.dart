@@ -1,9 +1,12 @@
+import 'package:binarybrigade/models/workout.dart';
+import 'package:binarybrigade/views/components/workout_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../distancetracker.dart';
 import '../models/appTheme.dart';
 import 'benefits_page.dart';
-import 'distance_page.dart';
+import 'components/workout_feed.dart';
+import 'components/distance_widget.dart';
 import 'components/eventwidget.dart';
 import '../main.dart';
 import 'event_page.dart';
@@ -14,17 +17,6 @@ class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context) =>
-      Scaffold(
-        appBar: AppBar(
-          title: Text('Home'),
-        ),
-        body: Center(child: Text('Home Page')),
-
-      );
-
-
-  @override
   State<HomePage> createState() => _HomePageState();
 }
 
@@ -33,11 +25,11 @@ class _HomePageState extends State<HomePage> {
   bool distanceTrackerToggle = false;
   int pageIndex = 0;
 
-  final screens = [
-    const WorkoutPage(),
-    DistancePage(),
-    const BenefitsPage(),
-    const SettingsPage()
+  static const screens = [
+    WorkoutPage(),
+    EventPage(),
+    BenefitsPage(),
+    SettingsPage()
   ];
 
   @override

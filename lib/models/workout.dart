@@ -8,8 +8,8 @@ class Workout {
   late DateTime m_timeEnd;
   late var m_listOfExercises = <Exercise>{};
 
-  Workout(String date, DateTime timeStart, DateTime timeEnd, Set<Exercise>? exercises) {
-    m_date = date;
+  Workout(String? date, DateTime timeStart, DateTime timeEnd, Set<Exercise>? exercises) {
+    m_date = date ?? "now";
     m_timeStart = timeStart;
     m_timeEnd = timeEnd;
     if (exercises != null) {
@@ -24,17 +24,25 @@ class Workout {
     m_listOfExercises.addAll(exercises);
   }
 
+  int durationInMinutes() {
+    Duration duration = m_timeEnd.difference(m_timeStart);
+    return duration.inMinutes;
+  }
+
   factory Workout.fromFireStore(DocumentSnapshot<Map<String, dynamic>> snapshot, SnapshotOptions? options,) {
     final data = snapshot.data();
-    final exerciseDocuments = data?['exercises'];
+    List<dynamic> exerciseArray = data?['exercises'];
+    Set<Exercise> exercises = <Exercise>{};
 
-    Set<Exercise> exercises = exerciseDocuments.map((exerciseDocument) => Exercise.fromFirestore(exerciseDocument, options)).toSet();
-    print(exercises);
+    for (Map<String, dynamic> e in exerciseArray) {
+      exercises.add(Exercise.fromJson(e));
+    }
+
     return Workout(
         data?['date'],
         data?['startTime'].toDate(),
         data?['endTime'].toDate(),
-        null);
+        exercises);
   }
 
   Map<String, dynamic> toFirestore() {
@@ -78,5 +86,14 @@ class Exercise {
   factory Exercise.fromFirestore(DocumentSnapshot<Map<String, dynamic>> snapshot, SnapshotOptions? options,) {
     final data = snapshot.data();
     return Exercise(data?['exerciseType'], data?['reps'], data?['weight'], data?['description']);
+  }
+  
+  static Exercise fromJson(Map<String, dynamic> data) {
+    return Exercise(data['exerciseType'], data['reps'], data['weight'], data['description']);
+  }
+
+  @override
+  String toString() {
+    return "$m_exerciseType, $m_exerciseDescription, Reps: $m_numberOfReps, Weight: $m_weightUsed";
   }
 }
