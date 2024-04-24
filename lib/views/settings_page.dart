@@ -48,16 +48,18 @@ class _SettingsPageState extends State<SettingsPage> {
     Provider.of<LoginStatus>(context, listen: false).signOut();
   }
 
+  void _onDeleteConfirm() {
+    Navigator.pop(context, 'Confirm');
+    Provider.of<LoginStatus>(context, listen: false).deleteAccount();
+  }
+
   void deleteAccount() {
     showDialog<String>(context: context, builder:
     (BuildContext context) => AlertDialog(
       title: const Text("Delete Account"),
       actions: [
         TextButton(onPressed: () => Navigator.pop(context, 'Cancel'), child: const Text('Cancel')),
-        TextButton(onPressed: () => {
-          Navigator.pop(context, 'Delete'),
-          Provider.of<LoginStatus>(context, listen: false).deleteAccount();
-        }, child: const Text("DELETE")),
+        TextButton(onPressed: _onDeleteConfirm, child: const Text("Confirm")),
       ],
     )
     );
@@ -67,7 +69,7 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:AppBar(
-        title: Text('Settings'),
+        title: const Text('Settings'),
       ),
       body: Center(
         child: Column(children: [

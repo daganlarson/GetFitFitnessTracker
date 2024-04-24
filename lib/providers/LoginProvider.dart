@@ -49,19 +49,12 @@ class LoginStatus with ChangeNotifier {
   }
 
   Future deleteAccount() async {
-<<<<<<< HEAD
     try {
     _auth.currentUser?.delete();
     _status = Status.Unauthenticated;
     notifyListeners();
     } catch (e) {}
     return Future.delayed(Duration.zero);
-=======
-   await _auth.currentUser?.delete();
-   _status = Status.Unauthenticated;
-   notifyListeners();
-   return Future.delayed(Duration.zero);
->>>>>>> main
   }
 
 
