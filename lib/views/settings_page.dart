@@ -8,7 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 
 import 'components/notifier.dart';
-
+import 'components/workout_feed.dart';
 import 'components/youtube_player.dart';
 
 class SettingsPage extends StatefulWidget {

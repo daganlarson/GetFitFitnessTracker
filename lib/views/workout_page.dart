@@ -80,8 +80,6 @@ class _WorkoutPageState extends State<WorkoutPage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-
-
           //CHART stuff
           Container(
             height: 300,
@@ -108,65 +106,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
               ],
             ),
           ),
-
-
-          // StreamBuilder for displaying workout data
-          StreamBuilder<QuerySnapshot>(
-            stream: _firestore.collection('workouts').snapshots(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                return const Center(
-                  child: Text("No workouts saved"),
-                );
-              } else {
-                return ListView.builder(
-                  itemCount: snapshot.data?.docs.length,
-                  itemBuilder: (context, index) {
-                    DocumentSnapshot historyfeed =
-                        snapshot.data?.docs[index] as DocumentSnapshot<Object?>;
-
-                    var date = historyfeed['date'];
-                    var exercises = historyfeed['exercises'];
-
-                    List<String> exerciseTypes = exercises.map((exercise) => exercise['exerciseType']).toList();
-
-                    return Stack(children: <Widget>[
-                      SizedBox(
-                          width: MediaQuery.of(context).size.width,
-                          height: 200,
-                          child: Padding(
-                              padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
-                              child: Material(
-                                  color: Colors.white,
-                                  elevation: 14.0,
-                                  child: Center(
-                                      child: Padding(
-                                          padding: EdgeInsets.all(8.0),
-                                          child: Column(children: <Widget>[
-                                            SizedBox(height: 10),
-                                            Text(
-                                              'Date: $date',
-                                              style: TextStyle(fontSize: 20.0),
-                                            ),
-                                            SizedBox(height: 10),
-                                            Text(
-                                              'Exercise Types: ${exerciseTypes.join(', ')}',
-                                              style: TextStyle(fontSize: 10.0),
-                                            ),
-                                          ]))))))
-                    ]);
-                  },
-                );
-              }
-            },
-          ),
-          const SizedBox(
-            height: 20,
-          ),
+          workoutFeedButton(context),
         ],
       ),
 

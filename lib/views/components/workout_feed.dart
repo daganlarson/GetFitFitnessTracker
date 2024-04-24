@@ -3,6 +3,8 @@ import 'package:binarybrigade/views/components/workout_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:googleapis/apigeeregistry/v1.dart';
 
 import '../../models/workout.dart';
 
@@ -73,7 +75,9 @@ class _WorkoutFeedState extends State<WorkoutFeed> {
 
   @override
   Widget build(BuildContext context) {
-    return NotificationListener<ScrollNotification>(
+    return Scaffold(
+        appBar: AppBar(),
+        body: NotificationListener<ScrollNotification>(
       onNotification: _onEndOfPage,
       child: ListView.builder(
         itemCount: _workouts.length,
@@ -84,6 +88,16 @@ class _WorkoutFeedState extends State<WorkoutFeed> {
           return WorkoutWidget(workout!);
         },
       ),
-    );
+    ));
   }
+}
+
+ElevatedButton workoutFeedButton(BuildContext context) {
+  return ElevatedButton(onPressed: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => WorkoutFeed()),
+    );
+  }, child: const Text("Previous Workouts"),
+  );
 }
