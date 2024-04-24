@@ -22,34 +22,43 @@ class _WorkoutWidgetState extends State<WorkoutWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final defaultTextStyle = TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.onPrimary);
     Duration duration = workout.m_timeEnd.difference(workout.m_timeStart);
     String hours = duration.inHours.toString();
     String date  = '${workout.m_timeStart.month.toString()}/${workout.m_timeStart.day.toString()}';
     List<String> exerciseTypes = workout.m_listOfExercises.map((e) => e.m_exerciseType.toString()).toList();
 
     return GestureDetector(
-      child: SizedBox(
-          width: MediaQuery.of(context).size.width,
-          height: 200,
-          child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Material(
-                  elevation: 14.0,
-                  child: Center(
-                      child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(children: <Widget>[
-                            SizedBox(height: 10),
-                            Text(
-                              'Date: $date',
-                              style: TextStyle(fontSize: 20.0),
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              'Exercise Types: ${exerciseTypes.join(', ')}',
-                              style: TextStyle(fontSize: 10.0),
-                            ),
-                          ])))))),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 6),
+        child: Container(
+        padding: const EdgeInsets.all(16.0),
+        decoration: BoxDecoration(
+          border: Border.all(color: Theme.of(context).colorScheme.secondary),
+          color: Theme.of(context).colorScheme.primary,
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Date: ${date}',
+              style: defaultTextStyle,
+            ),
+            SizedBox(height: 8.0),
+            Text(
+              'Duration: ${hours} hours',
+              style: defaultTextStyle,
+            ),
+            SizedBox(height: 8.0),
+            Text(
+              'Exercise Types: ${exerciseTypes.join(', ')}',
+              style:defaultTextStyle,
+            ),
+          ],
+        ),
+      )
+    ),
     );
   }
 

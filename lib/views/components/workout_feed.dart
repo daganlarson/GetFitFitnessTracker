@@ -76,7 +76,7 @@ class _WorkoutFeedState extends State<WorkoutFeed> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(title: const Text("Workouts"),),
         body: NotificationListener<ScrollNotification>(
       onNotification: _onEndOfPage,
       child: ListView.builder(
