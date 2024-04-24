@@ -83,6 +83,8 @@ flutter:
 
   assets:
     - assets/images/FitnessGraphic.png
+    - assets/images/yogaGraphic.jpg
+    - assets/images/runningGraphic.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
