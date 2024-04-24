@@ -8,7 +8,7 @@ import '../distancetracker.dart';
 import '../models/workout.dart';
 import 'components/log_workout.dart';
 import 'components/workout_feed.dart';
-import 'components/youtube_player.dart';
+import 'components/youtube_player/youtube_player.dart';
 
 class WorkoutPage extends StatefulWidget {
   const WorkoutPage({super.key});
@@ -91,7 +91,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
             onPressed: (){
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => Youtube_Player()),
+                MaterialPageRoute(builder: (context) => videoPage()),
               );
           }
          ),
