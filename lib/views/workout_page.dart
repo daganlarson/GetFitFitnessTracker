@@ -1,12 +1,10 @@
-import 'package:binarybrigade/views/components/workout_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:binarybrigade/providers/DatabaseProvider.dart';
-import 'package:googleapis/apigeeregistry/v1.dart';
-import 'package:googleapis/firestore/v1.dart';
+import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../distancetracker.dart';
 import '../models/workout.dart';
 import 'components/log_workout.dart';
 import 'components/workout_feed.dart';
@@ -20,8 +18,11 @@ class WorkoutPage extends StatefulWidget {
 
 class _WorkoutPageState extends State<WorkoutPage> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final Database _database = Database();
 
+  final StopWatchTimer _myStopWatch = StopWatchTimer();
+  final _isHours = true;
+  final DistanceTracker _myTracker = DistanceTracker();
+  final Database _database = Database();
   List<_ChartData> chartData = [];
 
   @override
@@ -33,9 +34,10 @@ class _WorkoutPageState extends State<WorkoutPage> {
   void _fetchWorkouts() async {
     DateTime now = DateTime.now();
     DateTimeRange lastSevenDays = DateTimeRange(
-      start: now.subtract(Duration(days: 6)),
+      start: now.subtract(const Duration(days: 6)),
       end: now,
     );
+
 
     try {
       List<Workout> workouts = await Database.getWorkouts(lastSevenDays);
@@ -60,7 +62,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
   }
 
   //Floating add button that adds a workout
-  // The FAB's foregroundColor, backgroundColor, and shape
+  // The FAB's foregroundColor, backgroundColor, and shape (not necessary but eh)
   static const List<(Color?, Color? background, ShapeBorder?)> customizations =
       <(Color?, Color?, ShapeBorder?)>[
     (null, null, null), // The FAB uses its default for null parameters.
@@ -71,11 +73,17 @@ class _WorkoutPageState extends State<WorkoutPage> {
   int index = 0; // Selects the customization.
 
   @override
+  void dispose() {
+    super.dispose();
+    _myStopWatch.dispose();
+  }
+  @override
   Widget build(BuildContext context) {
+
     return Scaffold(
 
       appBar: AppBar(
-        title: Text('Workout Page'),
+        title: const Text('Workout Page'),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -86,12 +94,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
             child: SfCartesianChart(
               //chart stuff
               //minutes exercised over last 7 (week) days column chart
-              primaryXAxis: const CategoryAxis(
-                  // labels: ChartAxisLabel(
-                  //   isVisible: true,
-                  //   categories: ['Sun', 'Mon', 'Tues', 'Wed', 'Thu', 'Fri', 'Sat'],
-                  // )
-                  ),
+              primaryXAxis: CategoryAxis(),
               title: const ChartTitle(text: 'Minutes Exercised Weekly'),
               legend: const Legend(isVisible: true),
 
@@ -105,6 +108,53 @@ class _WorkoutPageState extends State<WorkoutPage> {
                 )
               ],
             ),
+          ),
+        //this is the button to start distance tracking
+        Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: Size(280,80),
+                    ),
+                    onPressed: () {
+                      print('distance tracking button pressed');
+                      _myTracker.m_locationToggle = !_myTracker.m_locationToggle;
+                      if (_myTracker.m_locationToggle) {
+                        _myStopWatch.onExecute.add(StopWatchExecute.reset);
+                        _myStopWatch.onExecute.add(StopWatchExecute.start);
+                        _myTracker.trackDistanceTraveled();
+
+                      } else {
+                        _myStopWatch.onExecute.add(StopWatchExecute.stop);
+                      }
+
+                    },
+                    child: const Column(
+                        children: [
+                          Icon(Icons.play_circle_fill),
+                          Text('Distance Tracking Workout')
+                        ]
+                    )
+                ),
+                //this is the timer that times how long your distance workout was
+                StreamBuilder<int>(
+                  stream: _myStopWatch.rawTime,
+                  initialData: _myStopWatch.rawTime.value,
+                  builder: (context, snapshot){
+                    final value = snapshot.data;
+                    final displayTime = StopWatchTimer.getDisplayTime(value!, hours: _isHours);
+
+                    return Text(displayTime, style: const TextStyle(
+                        fontSize: 40, fontWeight: FontWeight.bold));
+                  },
+                ),
+              //this shows your distance in meters
+              Text(_myTracker.m_distanceTraveled.toString(), style: const TextStyle(
+                  fontSize: 40, fontWeight: FontWeight.bold)),
+              ]
+            )
           ),
           workoutFeedButton(context),
         ],
@@ -135,6 +185,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
 
   }
 }
+
 
 class _ChartData {
   final int dayOfWeek;
