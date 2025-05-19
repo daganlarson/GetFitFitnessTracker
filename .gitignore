@@ -48,3 +48,7 @@ app.*.map.json
 linux/flutter/*
 macos/Flutter/*
 windows/flutter/*
+
+# Firbase Files
+lib/firebase_options.dart
+
